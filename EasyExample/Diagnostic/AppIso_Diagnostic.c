@@ -256,7 +256,7 @@ static iso_u8* getFuncChar(iso_u16* length)
 /*  ...       2nd functionality, A.13 option bytes */
 /* ... */
     static iso_u8 au8FuncCha[] = { 0xFF,
-                                        5,  				//Number of Functionalities
+                                        8,  				//Number of Functionalities
 										MINIMUM_CF, 		1, 0, 		/* MINIMUM CF this is typically always the first entry */
 										UT_CLIENT_CF, 		2, 0,       /* VT-Client, no optional functions */
 										AUX_O_FUNCTIONS_CF, 1, 0,   	/* AUX-O function*/
