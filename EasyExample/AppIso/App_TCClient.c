@@ -1100,7 +1100,7 @@ static void CbTcExData(ISO_TCLINK_T *psTcLink) {
 				break;
 
 			case DDI_TOTAL_AREA: //DDI 116
-				psTcLink->lValueNew = TotalArea + 4001;  //1 mï¿½ in mmï¿½ //TODO implement Hectar Counter !
+				psTcLink->lValueNew = TotalArea + 4001;  //1 m² in mm² //TODO implement Hectar Counter !
 				break;
 
 			case DDI_TOTAL_DISTANCE: //DDI 597
@@ -1125,12 +1125,12 @@ static void CbTcExData(ISO_TCLINK_T *psTcLink) {
 
 			case DDI_EFFECTIVE_TOTAL_TIME: //DDI 119
 				// MUST send Time in s here. not in ms. !!! IMPORTANT !!!!
-				psTcLink->lValueNew = 4001; //TODO;  //1s in ï¿½s
+				psTcLink->lValueNew = 4001; //TODO;  //1s in µs
 				break;
 
 			case DDI_INEFFECTIVE_TOTAL_TIME: //DDI 120
 				// MUST send Time in s here. not in ms. !!! IMPORTANT !!!!
-				psTcLink->lValueNew =  4001; //TODO  //1s in ï¿½s
+				psTcLink->lValueNew =  4001; //TODO  //1s in µs
 				break;
 
 			case DDI_PRESCRIPTION_CONTROL_STATE:
@@ -1152,7 +1152,7 @@ static void CbTcExData(ISO_TCLINK_T *psTcLink) {
 
 
 			case DDI_LIFETIME_TOTAL_AREA: //DDI 271
-				psTcLink->lValueNew = 4001;  //1 mï¿½ in mmï¿½
+				psTcLink->lValueNew = 4001;  //1 m² in mm²
 				break;
 
 			case DDI_LIFETIME_TOTAL_DISTANCE: //DDI 598
@@ -1303,11 +1303,11 @@ static void CbTcExData(ISO_TCLINK_T *psTcLink) {
 			break;
 
 		case OBJID_DPD_EFFECTIVE_TOTAL_TIME:
-			EffectiveTotalTime = psTcLink->lValueNew; //1s in ï¿½s
+			EffectiveTotalTime = psTcLink->lValueNew; //1s in µs
 			break;
 
 		case OBJID_DPD_INEFFECTIVE_TOTAL_TIME:
-			IneffectiveTotalTime = psTcLink->lValueNew; //1s in ï¿½s
+			IneffectiveTotalTime = psTcLink->lValueNew; //1s in µs
 			break;
 
 		case OBJID_DPD_PRESCRIPTION_CONTROL_STATE:
