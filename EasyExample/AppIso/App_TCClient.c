@@ -254,7 +254,7 @@ static void AppTCC_DDOPSet(iso_u8 u8ClNu) {
 	 rpcExtendedStructureLabel  = H */
 	//                                         B           C       E
 	au8StructLabel[3] = 16; //This Example uses 16 Sections !
-	IsoTC_DeviceExt_Set(u8ClNu, "ConnectID", "CID", "01", au8StructLabel, pau8LC, au8ExtStructLabel);
+	IsoTC_DeviceExt_Set(u8ClNu, "EasyExample", "EEX", "01", au8StructLabel, pau8LC, au8ExtStructLabel);
 
 	/* rwDeviceElementObjectID,   = B
 	 reDeviceElementType,       = C
@@ -262,7 +262,7 @@ static void AppTCC_DDOPSet(iso_u8 u8ClNu) {
 	 rwDeviceElementNumber,     = E
 	 rwParentObjectID,          = F   */
 	//                             B        C        D        E     F
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_DEVICE, de_device, "ConnectID", DE_NUM_DEVICE, 0u);
+	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_DEVICE, de_device, "EasyExample", DE_NUM_DEVICE, 0u);
 
 	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_CONN, de_connector, "Front Connector", DE_NUM_CONN, OBJID_DET_DEVICE);
 	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_CONNECTOR); // Device Element Offset X
@@ -1100,7 +1100,7 @@ static void CbTcExData(ISO_TCLINK_T *psTcLink) {
 				break;
 
 			case DDI_TOTAL_AREA: //DDI 116
-				psTcLink->lValueNew = TotalArea + 4001;  //1 m² in mm² //TODO implement Hectar Counter !
+				psTcLink->lValueNew = TotalArea + 4001;  //1 mï¿½ in mmï¿½ //TODO implement Hectar Counter !
 				break;
 
 			case DDI_TOTAL_DISTANCE: //DDI 597
@@ -1125,12 +1125,12 @@ static void CbTcExData(ISO_TCLINK_T *psTcLink) {
 
 			case DDI_EFFECTIVE_TOTAL_TIME: //DDI 119
 				// MUST send Time in s here. not in ms. !!! IMPORTANT !!!!
-				psTcLink->lValueNew = 4001; //TODO;  //1s in µs
+				psTcLink->lValueNew = 4001; //TODO;  //1s in ï¿½s
 				break;
 
 			case DDI_INEFFECTIVE_TOTAL_TIME: //DDI 120
 				// MUST send Time in s here. not in ms. !!! IMPORTANT !!!!
-				psTcLink->lValueNew =  4001; //TODO  //1s in µs
+				psTcLink->lValueNew =  4001; //TODO  //1s in ï¿½s
 				break;
 
 			case DDI_PRESCRIPTION_CONTROL_STATE:
@@ -1152,7 +1152,7 @@ static void CbTcExData(ISO_TCLINK_T *psTcLink) {
 
 
 			case DDI_LIFETIME_TOTAL_AREA: //DDI 271
-				psTcLink->lValueNew = 4001;  //1 m² in mm²
+				psTcLink->lValueNew = 4001;  //1 mï¿½ in mmï¿½
 				break;
 
 			case DDI_LIFETIME_TOTAL_DISTANCE: //DDI 598
@@ -1303,11 +1303,11 @@ static void CbTcExData(ISO_TCLINK_T *psTcLink) {
 			break;
 
 		case OBJID_DPD_EFFECTIVE_TOTAL_TIME:
-			EffectiveTotalTime = psTcLink->lValueNew; //1s in µs
+			EffectiveTotalTime = psTcLink->lValueNew; //1s in ï¿½s
 			break;
 
 		case OBJID_DPD_INEFFECTIVE_TOTAL_TIME:
-			IneffectiveTotalTime = psTcLink->lValueNew; //1s in µs
+			IneffectiveTotalTime = psTcLink->lValueNew; //1s in ï¿½s
 			break;
 
 		case OBJID_DPD_PRESCRIPTION_CONTROL_STATE:
@@ -1397,7 +1397,7 @@ static void AppTCC_ReloadDDOs(iso_u8 u8ClNu) {
 		 rpcDeviceStructureLabel,   = F
 		 rpcDeviceLocalisationLabel = G */
 		//                           B           C       E      F            G
-		IsoTC_DeviceExt_Set(u8ClNu, "ConnectID", "ISM", "01", au8StructLabel, au8LCDatAct, au8ExtStructLabel);
+		IsoTC_DeviceExt_Set(u8ClNu, "EasyExample", "EEX", "01", au8StructLabel, au8LCDatAct, au8ExtStructLabel);
 
 		/* rwDeviceValuePresentObjectID, = A
 		 rlOffset,                     = B
