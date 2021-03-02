@@ -8,7 +8,7 @@
 #ifndef APPISO_APP_TCCLIENT_H_
 #define APPISO_APP_TCCLIENT_H_
 
-void AppTCClientSet(iso_s16 s16CfHandle, iso_s16 s16CfSrvHandle);
+void AppTCClientLogin(iso_s16 s16CfHandle);
 
 
 #endif /* APPISO_APP_TCCLIENT_H_ */

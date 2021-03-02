@@ -130,7 +130,7 @@ static void AppImp_Reset( void )
          AppVTClientLogin(s16CfHandle);    // Init Virtual terminal client
       #endif
       #ifdef _LAY10_
-         //AppTCClientLogin(s16CfHandle);    // Init Task Controller client
+         AppTCClientLogin(s16CfHandle);    // Init Task Controller client
       #endif
 
       //s16NmHandImp1 = s16CfHandle;      // We can store it here or later in the network event CB
@@ -212,10 +212,7 @@ static void CbCfClientEvents(const ISOCFEVENT_T* psCfData)
    {
       if (psCfData->eIsoUserFunct == task_controller)    // virtual_terminal ...
       {
-	      #ifdef _LAY10_
           // Task controller has started sending the TC status message ...
-    	  AppTCClientSet(s16NmHandImp1, psCfData->s16Handle );
-		  #endif
       }
    }
   

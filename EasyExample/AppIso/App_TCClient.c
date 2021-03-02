@@ -198,7 +198,7 @@ static iso_u8 au8LCDatAct[7] = { 0xFFu, 0xFFu, 0u, 0u, 0u, 0u, 0xFFu };
 
 
 
-void AppTCClientSet(iso_s16 s16CfHandle, iso_s16 s16CfSrvHandle) {
+void AppTCClientLogin(iso_s16 s16CfHandle) {
 	// CF rpabName have to be a Working set master
 	ISO_USER_PARAM_T userParamDefault = ISO_USER_PARAM_DEFAULT;
 	iso_u8 u8ClNum;
