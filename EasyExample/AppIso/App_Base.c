@@ -14,7 +14,7 @@
 
 #include "IsoDef.h"
 #include "App_VTClient.h"
-//#include "App_TCClient.h"
+#include "App_TCClient.h"
 
 #include "AppCommon/AppOutput.h"
 #include "Settings/settings.h"
@@ -212,7 +212,10 @@ static void CbCfClientEvents(const ISOCFEVENT_T* psCfData)
    {
       if (psCfData->eIsoUserFunct == task_controller)    // virtual_terminal ...
       {
-         // Task controller has started sending the TC status message ...
+	      #ifdef _LAY10_
+          // Task controller has started sending the TC status message ...
+    	  AppTCClientSet(s16NmHandImp1, psCfData->s16Handle );
+		  #endif
       }
    }
   

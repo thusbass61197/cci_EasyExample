@@ -10,6 +10,7 @@ set(COMPONENT_SRCS
   "../AppIso/App_Base.c"
   "../AppIso/App_Main.c"
   "../AppIso/App_VTClient.c"
+  "../AppIso/App_TCClient.c"
   "../AppIso/App_VTClientLev2.c"
   "../AppIso/AppMemAccess.cpp"
   "../AppCommon/AppOutput.c"
