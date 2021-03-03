@@ -1,4 +1,5 @@
-idf_component_register(SRCS "connect.c" "stdin_out.c"
-                    INCLUDE_DIRS "include"
-                    PRIV_REQUIRES esp_netif
-                    )
+if(CONFIG_CAN2IP_MODE_ON)	            
+	set(COMPONENT_SRCS   "connect.c" "stdin_out.c")				               
+	set(COMPONENT_ADD_INCLUDEDIRS "include")
+	set(COMPONENT_PRIV_REQUIRES esp_netif)
+endif()
