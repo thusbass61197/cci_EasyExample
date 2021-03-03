@@ -21,7 +21,9 @@
 #include <stdio.h>
 #include "AppHW.h"
 #include "driver/can.h"
-#include "can2ip_interface.h"
+#if defined(CONFIG_CAN2IP_MODE_ON)
+   #include "can2ip_interface.h"
+#endif /* defined(CONFIG_CAN2IP_MODE_ON) */
 #include "esp_err.h"
 #include "esp_log.h"
 
