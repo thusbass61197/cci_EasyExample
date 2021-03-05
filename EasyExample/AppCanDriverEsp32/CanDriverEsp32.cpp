@@ -38,8 +38,8 @@ static void HW_CanMsgPrint(uint8_t canNode_u8, twai_message_t* twai_msg_ps, uint
 
 #define CANBUS_TAG      "CANBUS Master"
 #define CAN2IP_TAG      "CAN2IP Master"
-#define TX_GPIO_NUM             21
-#define RX_GPIO_NUM             22
+#define TX_GPIO_NUM             21//new 21, old 5
+#define RX_GPIO_NUM             35
 
 static const twai_timing_config_t t_config = TWAI_TIMING_CONFIG_250KBITS();
 static const twai_filter_config_t f_config = TWAI_FILTER_CONFIG_ACCEPT_ALL();
