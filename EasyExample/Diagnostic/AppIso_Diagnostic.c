@@ -241,6 +241,9 @@ iso_u8* getComplianceCertificate(iso_u16* length)
 #define TECU_SERVER_CF		13 //Basic tractor ECU (server)
 #define TECU_CLIENT_CF		14 //Basic tractor ECU implement set (client)
 
+
+extern iso_u8 u8NumberSectionsImplement;
+
 static iso_u8* getFuncChar(iso_u16* length)
 {
 /*  11783-12 B.9 control function characteristics */
@@ -263,7 +266,7 @@ static iso_u8* getFuncChar(iso_u16* length)
 										AUX_N_FUNCTIONS_CF, 1, 0,   	/* AUX-N function*/
 										TC_BAS_CLIENT_CF, 	1, 0,       /* TC-BAS */
 										TC_GEO_CLIENT_CF, 	1, 1, 1,    /* TC-GEO */
-										TC_SC_CLIENT_CF, 	1, 2, 1, 16, /* TC-SC */										//21-25
+										TC_SC_CLIENT_CF, 	1, 2, 1, u8NumberSectionsImplement, /* TC-SC */										//21-25
 										TECU_CLIENT_CF, 	1, 0,		/* TECU */
 										0};
 

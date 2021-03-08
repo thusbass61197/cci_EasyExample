@@ -37,8 +37,9 @@
 
 
 
+iso_u8 u8NumberSectionsImplement = 16u;
 
-#define ARRAYSIZE  18
+
 // Defines for task controller client
 enum AppIso_Impl_TCApp_Object_ID {
 	/** \brief
@@ -253,7 +254,7 @@ static void AppTCC_DDOPSet(iso_u8 u8ClNu) {
 	 rpcDeviceLocalisationLabel = G
 	 rpcExtendedStructureLabel  = H */
 	//                                         B           C       E
-	au8StructLabel[3] = 16; //This Example uses 16 Sections !
+	au8StructLabel[3] = u8NumberSectionsImplement; //This Example uses 16 Sections !
 	IsoTC_DeviceExt_Set(u8ClNu, "EasyExample", "EEX", "01", au8StructLabel, pau8LC, au8ExtStructLabel);
 
 	/* rwDeviceElementObjectID,   = B
@@ -270,98 +271,104 @@ static void AppTCC_DDOPSet(iso_u8 u8ClNu) {
 	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_CONNECTOR_TYPE);
 	IsoTC_DeviceElement_End(u8ClNu);
 
+	if (u8NumberSectionsImplement > 1)
+	{
+		//Sections
+		//Section 16:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_016, de_section, "Section 016", DE_NUM_SECTION_016, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_016); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  15:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_015, de_section, "Section 015", DE_NUM_SECTION_015, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_015); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  14:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_014, de_section, "Section 014", DE_NUM_SECTION_014, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_014); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  13:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_013, de_section, "Section 013", DE_NUM_SECTION_013, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_013); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  12:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_012, de_section, "Section 012", DE_NUM_SECTION_012, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_012); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  11:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_011, de_section, "Section 011", DE_NUM_SECTION_011, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_011); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  10:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_010, de_section, "Section 010", DE_NUM_SECTION_010, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_010); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  9:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_009, de_section, "Section 009", DE_NUM_SECTION_009, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_009); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  8:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_008, de_section, "Section 008", DE_NUM_SECTION_008, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_008); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  7:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_007, de_section, "Section 007", DE_NUM_SECTION_007, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_007); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  6:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_006, de_section, "Section 006", DE_NUM_SECTION_006, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_006); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  5:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_005, de_section, "Section 005", DE_NUM_SECTION_005, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_005); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  4:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_004, de_section, "Section 004", DE_NUM_SECTION_004, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_004); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  3:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_003, de_section, "Section 003", DE_NUM_SECTION_003, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_003); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//Section  2:
+		IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_002, de_section, "Section 002", DE_NUM_SECTION_002, OBJID_DET_DEVICE);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
+		IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_002); // Device Element Offset Y
+		IsoTC_DeviceElement_End(u8ClNu);
+		//here we did make Sections 16-15-14 and so on ...
+	}
 
-	//Sections
-	//Section 16:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_016, de_section, "Section 016", DE_NUM_SECTION_016, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_016); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  15:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_015, de_section, "Section 015", DE_NUM_SECTION_015, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_015); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  14:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_014, de_section, "Section 014", DE_NUM_SECTION_014, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_014); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  13:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_013, de_section, "Section 013", DE_NUM_SECTION_013, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_013); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  12:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_012, de_section, "Section 012", DE_NUM_SECTION_012, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_012); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  11:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_011, de_section, "Section 011", DE_NUM_SECTION_011, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_011); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  10:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_010, de_section, "Section 010", DE_NUM_SECTION_010, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_010); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  9:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_009, de_section, "Section 009", DE_NUM_SECTION_009, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_009); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  8:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_008, de_section, "Section 008", DE_NUM_SECTION_008, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_008); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  7:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_007, de_section, "Section 007", DE_NUM_SECTION_007, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_007); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  6:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_006, de_section, "Section 006", DE_NUM_SECTION_006, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_006); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  5:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_005, de_section, "Section 005", DE_NUM_SECTION_005, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_005); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  4:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_004, de_section, "Section 004", DE_NUM_SECTION_004, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_004); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  3:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_003, de_section, "Section 003", DE_NUM_SECTION_003, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_003); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
-	//Section  2:
-	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_002, de_section, "Section 002", DE_NUM_SECTION_002, OBJID_DET_DEVICE);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_X_SECTION); // Device Element Offset X
-	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_OFFSET_Y_SECTION_002); // Device Element Offset Y
-	IsoTC_DeviceElement_End(u8ClNu);
+	//this is Section 1. if the Display only can do 1 Section, we can only load 1.
+	//TODO. make a logic so the other Sections work virtually.
 	//Section  1:
 	IsoTC_DeviceElement_Set(u8ClNu, OBJID_DET_SECTION_001, de_section, "Section 001", DE_NUM_SECTION_001, OBJID_DET_DEVICE);
 	IsoTC_AddDPDObject(u8ClNu, OBJID_DPD_ACTUAL_WORKING_WIDTH_SECTION);
@@ -883,15 +890,14 @@ static void CbTcConnCtrl(const ISO_TCCBCONN_T *psTcCbConn) {
 		 - sVersDat.u8Boottime of TC/DL ( >= version 3 else 0xFF )    */
 		s16TCHandle = IsoTC_Read_TCHandle(s16TCCHandle);
 
-
-
 		//now Special Case !!!
 		//we have a OLD TC Server !
 
 
-		if (sVersDat.u8NumberSectionsForSC < 16u)
+		if (sVersDat.u8NumberSectionsForSC < u8NumberSectionsImplement)
 		{
 			//now we are in Big Trouble.
+			u8NumberSectionsImplement = 1;
 
 		}
 
@@ -902,14 +908,14 @@ static void CbTcConnCtrl(const ISO_TCCBCONN_T *psTcCbConn) {
 			IsoTC_SetVersionMsg(psTcCbConn->u8ClNum, TC_R2DIS, /* must be 3 here !!! */
 			TC_SUPPORT_DOCU | TC_SUPPORT_TC_GEO | TC_SUPPORT_TC_SC,
 			TC_SUPPORT_OPT2, 1u, //u8NumberBoomsForSC,
-					16u, //u8NumberSectionsForSC,
+					u8NumberSectionsImplement, //u8NumberSectionsForSC,
 					1u //u8NumberControlChannels
 					);
 		} else if (sVersDat.u8VersionNumber >= TC_R2IS) {
 			IsoTC_SetVersionMsg(psTcCbConn->u8ClNum, TC_R2IS,
 			TC_SUPPORT_DOCU | TC_SUPPORT_TC_GEO | TC_SUPPORT_TC_SC,
 			TC_SUPPORT_OPT2, 1u, //u8NumberBoomsForSC,
-					16u, //u8NumberSectionsForSC,
+					u8NumberSectionsImplement, //u8NumberSectionsForSC,
 					1u //u8NumberControlChannels
 					);
 		} else { /* Version 1 or 2 -> we work with defaults ( Version 2 ) */
