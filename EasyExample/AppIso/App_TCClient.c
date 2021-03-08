@@ -1345,7 +1345,7 @@ static void CbTcExData(ISO_TCLINK_T *psTcLink) {
 	}
 
 
-#ifdef ISO_DEBUG_ENABLED
+#ifdef ISO_DEBUG_ENABLED_TC
 #define iso_DebugTrace printf
 	if (ISO_TRUE) {
 		switch (psTcLink->ePDCmd) {
