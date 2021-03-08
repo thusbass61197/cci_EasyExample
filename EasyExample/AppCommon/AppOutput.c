@@ -187,6 +187,9 @@ void OutputVtMessages(const ISOVT_MSG_STA_T* pIsoMsgSta, iso_s32 s32Time)
    case softkey_activation:
       iso_DebugPrint("SOFTKEY ACTIVATION: 0x%4.4x   %5d   %10d   Time: %8.4d\n", pIsoMsgSta->wObjectID, pIsoMsgSta->bPara, pIsoMsgSta->lValue, s32Time);
       break;
+   case button_activation:
+	  iso_DebugPrint("BUTTON ACTIVATION: 0x%4.4x   %5d   %10d   Time: %8.4d\n", pIsoMsgSta->wObjectID, pIsoMsgSta->bPara, pIsoMsgSta->lValue, s32Time);
+	  break;
    case auxiliary_assign_type_1:
       iso_DebugPrint("AUX TYP 1 ASSIGN:   0x%4.4x   %5d   Time: %8.4d\n", pIsoMsgSta->wObjectID, pIsoMsgSta->wPara1, s32Time);
       break;
