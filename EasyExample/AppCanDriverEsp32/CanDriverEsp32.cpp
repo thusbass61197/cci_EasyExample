@@ -130,7 +130,7 @@ int16_t hw_CanSendMsg(uint8_t canNode_u8, uint32_t canId_u32, const uint8_t canD
 #if(CONFIG_CAN2IP_MODE_ON)
    if (ok_can2ip != ESP_OK)
    {
-      ESP_LOGE(CAN2IP_TAG, "Tx error: %x %x Error: %i - %s", v.identifier, twai_msg_send.data[0], ok_can2ip, esp_err_to_name(ok_can2ip));
+      ESP_LOGE(CAN2IP_TAG, "Tx error: %x %x Error: %i - %s", twai_msg_send.identifier, twai_msg_send.data[0], ok_can2ip, esp_err_to_name(ok_can2ip));
    }
 #endif
 
