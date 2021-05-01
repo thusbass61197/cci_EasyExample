@@ -3,7 +3,7 @@
 	<Objects>
 		<Object Class="CInputNumber">
 			<Objects>
-				<Object Class="CNumberVariable" JVS-ID="21001" ObjectName="NumberVariable_Gesamtzaehler"/>
+				<Object Class="CNumberVariable" JVS-ID="21003" ObjectName="NumberVariable_Tagesziel"/>
 				<Object Class="CFontStyle" JVS-ID="23001" ObjectName="FontAttributes_Default"/>
 			</Objects>
 		</Object>

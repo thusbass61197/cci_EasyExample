@@ -41,15 +41,17 @@ const unsigned long ISO_OP_MEMORY_CLASS isoOP_MyProject1_Offset[] = {
 	   885,  // LinearBargraph_Tageszaehler_Offset
 	   909,  // NumberVariable_Tageszaehler_Offset
 	   916,  // NumberVariable_Gesamtzaehler_Offset
-	   923,  // FontAttributes_SoftKey_Offset
-	   931,  // FontAttributes_Default_Offset
-	   939,  // FontAttributes_Button_Offset
-	   947,  // LineAttributes_Border_Offset
-	   955,  // FillAttributes_DarkerBG_Offset
-	   963,  // ObjectPointer_Null2_Offset
-	   968,  // ObjectPointer_27001_Offset
-	   973,  // ObjectPointer_Null1_Offset
-	   978,  // ObjectPointer_27003_Offset
-	   983,  // AuxFunction2_PlusPlus_Offset
-	   995,  // ExternalObjectDefinition_38000_Offset
+	   923,  // NumberVariable_Gesamtziel_Offset
+	   930,  // NumberVariable_Tagesziel_Offset
+	   937,  // FontAttributes_SoftKey_Offset
+	   945,  // FontAttributes_Default_Offset
+	   953,  // FontAttributes_Button_Offset
+	   961,  // LineAttributes_Border_Offset
+	   969,  // FillAttributes_DarkerBG_Offset
+	   977,  // ObjectPointer_Null2_Offset
+	   982,  // ObjectPointer_Tagesziel_Offset
+	   987,  // ObjectPointer_Null1_Offset
+	   992,  // ObjectPointer_Gesamtziel_Offset
+	   997,  // AuxFunction2_PlusPlus_Offset
+	  1009,  // ExternalObjectDefinition_38000_Offset
 };  // isoOP_MyProject1_Offset

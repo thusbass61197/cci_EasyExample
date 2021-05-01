@@ -38,24 +38,26 @@
 #define LinearBargraph_Tageszaehler_Offset                    885
 #define NumberVariable_Tageszaehler_Offset                    909
 #define NumberVariable_Gesamtzaehler_Offset                   916
-#define FontAttributes_SoftKey_Offset                         923
-#define FontAttributes_Default_Offset                         931
-#define FontAttributes_Button_Offset                          939
-#define LineAttributes_Border_Offset                          947
-#define FillAttributes_DarkerBG_Offset                        955
-#define ObjectPointer_Null2_Offset                            963
-#define ObjectPointer_27001_Offset                            968
-#define ObjectPointer_Null1_Offset                            973
-#define ObjectPointer_27003_Offset                            978
-#define AuxFunction2_PlusPlus_Offset                          983
-#define ExternalObjectDefinition_38000_Offset                 995
+#define NumberVariable_Gesamtziel_Offset                      923
+#define NumberVariable_Tagesziel_Offset                       930
+#define FontAttributes_SoftKey_Offset                         937
+#define FontAttributes_Default_Offset                         945
+#define FontAttributes_Button_Offset                          953
+#define LineAttributes_Border_Offset                          961
+#define FillAttributes_DarkerBG_Offset                        969
+#define ObjectPointer_Null2_Offset                            977
+#define ObjectPointer_Tagesziel_Offset                        982
+#define ObjectPointer_Null1_Offset                            987
+#define ObjectPointer_Gesamtziel_Offset                       992
+#define AuxFunction2_PlusPlus_Offset                          997
+#define ExternalObjectDefinition_38000_Offset                1009
 
 #define ISO_OP_MEMORY_CLASS
 
-#define ISO_OP_MyProject1_Size   1008
+#define ISO_OP_MyProject1_Size   1022
 extern const unsigned char ISO_OP_MEMORY_CLASS isoOP_MyProject1[];
 
-#define ISO_OP_MyProject1_ObjectNumber     48
+#define ISO_OP_MyProject1_ObjectNumber     50
 extern const unsigned long ISO_OP_MEMORY_CLASS isoOP_MyProject1_Offset[];
 extern const unsigned long ISO_OP_MEMORY_CLASS isoOP_MyProject1_Offset_Id[];
 #define ISO_OP_MyProject1_Scale_Offset      1
