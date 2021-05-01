@@ -64,7 +64,7 @@
 		<Object Class="CFontStyle" JVS-ID="23000" ObjectName="FontAttributes_SoftKey" Pinned="FALSE">
 			<PropertySheet Name="Font" ID="68816">
 				<Property Name="Name">
-					<Value>MS Shell Dlg</Value>
+					<Value>Lucida Console</Value>
 				</Property>
 				<Property Name="Size">
 					<Value>18</Value>
@@ -103,7 +103,7 @@
 					<Value>0</Value>
 				</Property>
 				<Property Name="Proportional">
-					<Value>1</Value>
+					<Value>0</Value>
 				</Property>
 				<Property Name="ISOFontType">
 					<Value>0</Value>
@@ -160,7 +160,7 @@
 					<Value>0</Value>
 				</Property>
 				<Property Name="Proportional">
-					<Value>1</Value>
+					<Value>0</Value>
 				</Property>
 				<Property Name="ISOFontType">
 					<Value>0</Value>
@@ -190,7 +190,7 @@
 					<Value>0</Value>
 				</Property>
 				<Property Name="Weight">
-					<Value>400</Value>
+					<Value>700</Value>
 				</Property>
 				<Property Name="Italic">
 					<Value>0</Value>
@@ -217,7 +217,7 @@
 					<Value>0</Value>
 				</Property>
 				<Property Name="Proportional">
-					<Value>1</Value>
+					<Value>0</Value>
 				</Property>
 				<Property Name="ISOFontType">
 					<Value>0</Value>

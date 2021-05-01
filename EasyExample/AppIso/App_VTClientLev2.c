@@ -106,27 +106,27 @@ iso_u32 Gesamtziel = 80;
 
 
 //Das ist meine Favorisierte Schreibweise. man muss sich aber das ? und den : für WENN und SONST einprägen.
-void CheckZiel(const ISOVT_EVENT_DATA_T* psEvData) {
+void CheckZiel(iso_u8 u8Instance) {
 
-	IsoVtcCmd_NumericValue(psEvData->u8Instance, ObjectPointer_Tagesziel,  Tageszaehler  >= Tagesziel  ? OutputString_ZielErreicht : ID_NULL);
-	IsoVtcCmd_NumericValue(psEvData->u8Instance, ObjectPointer_Gesamtziel, Gesamtzaehler >= Gesamtziel ? OutputString_ZielErreicht : ID_NULL);
+	IsoVtcCmd_NumericValue(u8Instance, ObjectPointer_Tagesziel,  Tageszaehler  >= Tagesziel  ? OutputString_ZielErreicht : ID_NULL);
+	IsoVtcCmd_NumericValue(u8Instance, ObjectPointer_Gesamtziel, Gesamtzaehler >= Gesamtziel ? OutputString_ZielErreicht : ID_NULL);
 
 }
 
 
 //ALTERANTIVE Schreibweise. diese entspricht mehr der englischen Sprache.
-void CheckZielAlternativ(const ISOVT_EVENT_DATA_T* psEvData) {
+void CheckZielAlternativ(iso_u8 u8Instance) {
 
 	if (Tageszaehler >= Tagesziel) { //WENN Bedingung
-		IsoVtcCmd_NumericValue(psEvData->u8Instance, ObjectPointer_Tagesziel, OutputString_ZielErreicht); //DANN Fall
+		IsoVtcCmd_NumericValue(u8Instance, ObjectPointer_Tagesziel, OutputString_ZielErreicht); //DANN Fall
 	} else {
-		IsoVtcCmd_NumericValue(psEvData->u8Instance, ObjectPointer_Tagesziel, ID_NULL); //SONST Fall
+		IsoVtcCmd_NumericValue(u8Instance, ObjectPointer_Tagesziel, ID_NULL); //SONST Fall
 	}
 
 	if(Gesamtzaehler >= Gesamtziel) {
-		IsoVtcCmd_NumericValue(psEvData->u8Instance, ObjectPointer_Gesamtziel, OutputString_ZielErreicht); //DANN Fall
+		IsoVtcCmd_NumericValue(u8Instance, ObjectPointer_Gesamtziel, OutputString_ZielErreicht); //DANN Fall
 	} else {
-		IsoVtcCmd_NumericValue(psEvData->u8Instance, ObjectPointer_Gesamtziel, ID_NULL); //SONST Fall
+		IsoVtcCmd_NumericValue(u8Instance, ObjectPointer_Gesamtziel, ID_NULL); //SONST Fall
 	}
 
 
@@ -179,7 +179,7 @@ void VTC_handleSoftkeysAndButtons_RELEASED(const struct ButtonActivation_S *pBut
 	// Speichern des Gesamtzaehler; non-volatile; nicht flüchtig; spannungsausfallsicher gespeichert
 	setU32("CF-A", "Gesamtzaehler", Gesamtzaehler);
 
-	CheckZiel((const ISOVT_EVENT_DATA_T*)pButtonData);
+	CheckZiel(pButtonData->u8Instance);
 }
 
 void VTC_handleNumericValues(const struct InputNumber_S * pInputNumberData) {
@@ -208,7 +208,7 @@ void VTC_handleNumericValues(const struct InputNumber_S * pInputNumberData) {
 		break;
 	}
 
-	CheckZiel((const ISOVT_EVENT_DATA_T*)pInputNumberData);
+	CheckZiel(pInputNumberData->newValue);
 }
 
 
@@ -252,7 +252,7 @@ void VTC_setPoolReady(const ISOVT_EVENT_DATA_T* psEvData)
 
 
 
-	CheckZiel(psEvData);
+	CheckZiel(psEvData->u8Instance);
 }
 
 
