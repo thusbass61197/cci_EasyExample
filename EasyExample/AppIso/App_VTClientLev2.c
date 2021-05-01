@@ -179,7 +179,7 @@ void VTC_handleSoftkeysAndButtons_RELEASED(const struct ButtonActivation_S *pBut
 	// Speichern des Gesamtzaehler; non-volatile; nicht flüchtig; spannungsausfallsicher gespeichert
 	setU32("CF-A", "Gesamtzaehler", Gesamtzaehler);
 
-	CheckZiel(pButtonData);
+	CheckZiel((const ISOVT_EVENT_DATA_T*)pButtonData);
 }
 
 void VTC_handleNumericValues(const struct InputNumber_S * pInputNumberData) {
@@ -208,7 +208,7 @@ void VTC_handleNumericValues(const struct InputNumber_S * pInputNumberData) {
 		break;
 	}
 
-	CheckZiel(pInputNumberData);
+	CheckZiel((const ISOVT_EVENT_DATA_T*)pInputNumberData);
 }
 
 
