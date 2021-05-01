@@ -152,8 +152,12 @@ void VTC_handleSoftkeysAndButtons_RELEASED(const struct ButtonActivation_S *pBut
 	case SoftKey_MinusMinus:
 	// Button mit Namen  Button_MinusMinus mit ID 6003 wurde losgelassen.
 	case Button_MinusMinus:
-		Tageszaehler--;
-		Gesamtzaehler--;
+		//bei Zählerstand 0 soll er nicht mehr -- machen.
+		if (Tageszaehler > 0)
+			Tageszaehler--;
+		//bei Zählerstand 0 soll er nicht mehr -- machen.
+		if (Gesamtzaehler > 0)
+			Gesamtzaehler--;
 		break;
 
 	case SoftKey_Reset_Gesamtzaehler:
