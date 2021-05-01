@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<JetViewSoft-DefaultObjects Version="3.0" ProductVersion="5.5.0.4333" RelatedObjectPool=".\MyProject1.jop">
+<JetViewSoft-DefaultObjects Version="3.0" ProductVersion="5.5.1.4367" RelatedObjectPool=".\MyProject1.jop">
 	<Objects>
 		<Object Class="CInputNumber">
 			<Objects>
@@ -20,7 +20,13 @@
 		</Object>
 		<Object Class="COutputText">
 			<Objects>
-				<Object Class="CFontStyle" JVS-ID="23002" ObjectName="FontAttributes_Button"/>
+				<Object Class="CFontStyle" JVS-ID="23001" ObjectName="FontAttributes_Default"/>
+			</Objects>
+		</Object>
+		<Object Class="GraphicObject">
+			<Objects>
+				<Object Class="CLineStyle" JVS-ID="24000" ObjectName="LineAttributes_Border"/>
+				<Object Class="CFillStyle" JVS-ID="25000" ObjectName="FillAttributes_DarkerBG"/>
 			</Objects>
 		</Object>
 	</Objects>
