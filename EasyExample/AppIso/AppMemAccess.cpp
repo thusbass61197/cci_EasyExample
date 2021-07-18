@@ -264,7 +264,7 @@ void updateAuxAssignment(const char auxSection[], VT_AUXAPP_T* sAuxAss)
     }
     else
     {
-        iso_s16 auxCfHandle = IsoClGetCfHandleToName(ISO_CAN_VT, &sAuxAss->baAuxName);
+        iso_s16 auxCfHandle = IsoCl_GetCfHandleToName(ISO_CAN_VT, &sAuxAss->baAuxName);
         iso_u16 wModelIdentCode = 0;
         if (IsoReadAuxInputDevModIdentCode(auxCfHandle, &wModelIdentCode) == E_NO_ERR)
         {

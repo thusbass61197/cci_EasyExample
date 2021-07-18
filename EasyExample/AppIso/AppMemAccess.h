@@ -25,10 +25,10 @@ extern "C" {
    int IsoAuxWriteAssignToFile(VT_AUXAPP_T asAuxAss[], iso_s16 iNumberOfAssigns);
 
    iso_s16  getAuxAssignment(const char section[], VT_AUXAPP_T asAuxAss[]);
-   void setAuxAssignment(const char section[], VT_AUXAPP_T asAuxAss[], iso_s16 iNumberOfAssigns);
-   void updateAuxAssignment(const char auxSection[], VT_AUXAPP_T* sAuxAss);
+   void     setAuxAssignment(const char section[], VT_AUXAPP_T asAuxAss[], iso_s16 iNumberOfAssigns);
+   void     updateAuxAssignment(const char auxSection[], VT_AUXAPP_T* sAuxAss);
 
-   /* ************************************************************************ */
+/* ************************************************************************ */
 #ifdef __cplusplus
 } /* end of extern "C" */
 #endif
