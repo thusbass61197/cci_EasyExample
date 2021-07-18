@@ -95,7 +95,6 @@ void CbErrorOutp(iso_u8 bFun, iso_u8 bLocation, iso_s16 iCause, iso_s32 s32TimeM
          switch (bFun)
          {
             case ISONM_LISTOFHANDLES:         strFun = "iso_NmReadListOfCfHandles()"; break;
-            case ISONM_GETDATAOFMEMBER:       strFun = "iso_NmGetDataOfMember()"; break;
             default:                          strFun = "Unknown           "; break;
          }
          break;
@@ -253,8 +252,8 @@ void CbErrorOutp(iso_u8 bFun, iso_u8 bLocation, iso_s16 iCause, iso_s32 s32TimeM
          switch (bFun)
          {
             case ISOAUXIMPCYCLIC:  strFun ="IsoAuxImpCyclic() "; break;
-            case ISOAUXASSIGNEXT:  strFun ="IsoVTAuxAssignExt()"; break;
-            case ISOAUXFUNCTOAPP:  strFun ="IsoAuxFunctiontoApplication()"; break;
+            case ISOAUXASSIGNEXT:  strFun ="AuxFunctionAssignExt()"; break;
+            case ISOAUXFUNCTOAPP:  strFun ="AuxFunctionToApplication()"; break;
             case ISOAUXPREFASSIGN: strFun ="IsoAuxPreferredAssignSend()"; break;
             default:               strFun ="Unknown           "; break;
          }  
@@ -284,10 +283,10 @@ void CbErrorOutp(iso_u8 bFun, iso_u8 bLocation, iso_s16 iCause, iso_s32 s32TimeM
          strMod = "VT       ";
          switch (bFun)
          {
-            case ISOVTMULTIPLENEXTVT:  strFun = "IsoVTMultipleNextVT()"; break;
+            case ISOVTMULTIPLENEXTVT:  strFun = "IsoVtcMultipleNextVT()"; break;
             case ISOVTRUN:             strFun = "ProcessState()    "; break;
-            case ISOVTINIT:            strFun = "IsoVT_CreateInstance()"; break;
-            case ISOWORKINGSET:        strFun = "IsoWorkingSet()   "; break;
+            case ISOVTINIT:            strFun = "IsoVtcCreateInstance()"; break;
+            case ISOWORKINGSET:        strFun = "VtcWorkingSetMsg()"; break;
             default:                   strFun = "Unknown "          ; break;
          }
          break;
@@ -314,6 +313,7 @@ void CbErrorOutp(iso_u8 bFun, iso_u8 bLocation, iso_s16 iCause, iso_s32 s32TimeM
 #if defined(_LAY6_)
          switch (bFun)
          {  /* Annex F */
+            case (iso_u8)select_active_workingset: strFun = "IsoVtcCmd_SelectActiveWorkingSet()"; break;
             case (iso_u8)esc                     : strFun = "IsoVtcCmd_ESC()   "; break;
             case (iso_u8)hide_show_object        : strFun = "IsoVtcCmd_ObjHideShow()"; break;
             case (iso_u8)enable_disable_object   : strFun = "IsoVtcCmd_ObjEnableDisable()"; break;
@@ -342,7 +342,6 @@ void CbErrorOutp(iso_u8 bFun, iso_u8 bLocation, iso_s16 iCause, iso_s32 s32TimeM
             case (iso_u8)graphics_context        : strFun = "IsoVtcCmd_GraphicsContext()"; break;
             case (iso_u8)get_attribute_value     : strFun = "IsoVtcCmd_GetAttribute()"; break;
             case (iso_u8)select_colour_map       : strFun = "IsoVtcCmd_SelectColourMap()"; break;
-            case (iso_u8)identify_VT             : strFun = "IsoVtcCmd_IdentifyVT()"; break;
             case (iso_u8)execute_ExtMacro        : strFun = "IsoVtcCmd_ExecuteExtendedMacro()"; break;
             case (iso_u8)lockunlock_mask         : strFun = "IsoVtcCmd_LockUnlockMask()"; break;
             case (iso_u8)execute_Macro           : strFun = "IsoVtcCmd_ExecuteMacro()"; break;
@@ -355,6 +354,8 @@ void CbErrorOutp(iso_u8 bFun, iso_u8 bLocation, iso_s16 iCause, iso_s32 s32TimeM
             case (iso_u8)get_supported_widechar:   strFun = "IsoVtcCmd_GetSupportedWidechar()"; break;
             case (iso_u8)get_WM_data:              strFun = "IsoVtcCmd_GetWindowMaskData()"; break;
             case (iso_u8)get_supported_objects:    strFun = "IsoVtcCmd_GetSupportedObjects()"; break;
+            case (iso_u8)screen_capture:           strFun = "IsoVtcCmd_ScreenCapture()"; break;
+            case (iso_u8)identify_VT:              strFun = "IsoVtcCmd_IdentifyVT()"; break;
             case (iso_u8)get_version:
             case (iso_u8)extended_get_version:     strFun = "IsoVtcMsg_GetVersions()"; break;
             case (iso_u8)load_version:
@@ -369,16 +370,6 @@ void CbErrorOutp(iso_u8 bFun, iso_u8 bLocation, iso_s16 iCause, iso_s32 s32TimeM
 #else  /* defined(_LAY6_) */
          strFun = "VtcCmdAdd() ";
 #endif /* defined(_LAY6_) */
-         break;
-      case M_VTXCR :
-         strMod = "IsoVtXcr "; 
-         switch (bFun)
-         {
-            case ISOCOMMANDSC:  strFun ="IsoCommandSC()    "; break;
-            case ISOCOMMANDEC:  strFun ="IsoCommandEC()    "; break;
-            case ISOCOMMANDTC:  strFun ="IsoCommandTC()    "; break;
-            default:            strFun ="Unknown           "; break;
-         }  
          break;
 
       case M_SC:  /* Sequence control client */

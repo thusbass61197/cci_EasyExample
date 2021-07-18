@@ -87,7 +87,7 @@ void OutputNetworkEvents(const ISONETEVENT_T* psNmEvent, iso_s32  s32Time)
       const  iso_char   *pchFunc;
       ISO_CF_INFO_T     sCfInfo;
 
-      (void)iso_NmGetCfInfo(psNmEvent->s16Handle, &sCfInfo);   /* only single threaded ... */
+      (void)iso_BaseGetCfInfo(psNmEvent->s16Handle, &sCfInfo);   /* only single threaded ... */
       pchFunc = NMUserFuncString(sCfInfo.eIsoUserFunct);
 
       iso_DebugPrint("NE CH %1u: %-6s %-8s CF %2.2x (%4.4x) Time: %8.4d \n         NAME: %2.2x %2.2x %2.2x %2.2x %2.2x %2.2x %2.2x %2.2x  %-10s (UFnc:%2.2d)\n",
@@ -111,7 +111,7 @@ void OutputDataLink(ISO_TPREP_E eDataTransStatus, const ISO_TPINFO_T* psTpInfo)
       iso_s32  s32Time;
 
 #if (!defined(ISO_CORE_MUTEX)) || defined(ISO_CORE_MUTEX_RECURSIVE)
-      s32Time = IsoDrvGetTimeMs();
+      s32Time = iso_BaseGetTimeMs();
 #else /* (!defined(ISO_CORE_MUTEX)) || defined(ISO_CORE_MUTEX_RECURSIVE) */
       s32Time = 0;
 #endif /* (!defined(ISO_CORE_MUTEX)) || defined(ISO_CORE_MUTEX_RECURSIVE) */
@@ -132,7 +132,7 @@ void OutputDataLink(ISO_TPREP_E eDataTransStatus, const ISO_TPINFO_T* psTpInfo)
 
       /* iso_DebugPrint */
       iso_DebugTrace("PGN: %6.6x CF INT: %2.2x (%4.4x)  EXT: %2.2x (%4.4x)  %-14.17s Size: %8.1d  Time: %8.4d \n",
-         psTpInfo->dwPGN, psTpInfo->u8SAIntern, psTpInfo->s16HndIntern,
+         psTpInfo->dwPGN, psTpInfo->u8SAIntern, psTpInfo->s16HndIntern, // review: using SA should not be required in base
          psTpInfo->u8SAPartner, psTpInfo->s16HndPartner, cpchTpStatus, psTpInfo->dwNumberofBytes, s32Time);
 #endif /* ISO_DEBUG_ENABLED */
    }
@@ -157,7 +157,7 @@ void OutputClientCfEvents(const ISOCFEVENT_T* psCfEvData, iso_s32 s32Time)
    default:                    pchEv = "Unknown   ";  break;
    }
 
-   (void)iso_NmGetCfInfo(psCfEvData->s16Handle, &sCFDat);
+   (void)iso_BaseGetCfInfo(psCfEvData->s16Handle, &sCFDat);
 
    iso_DebugPrint("CL - CF: %-10s Event: %-10s SA: %2.2x (%4.4x)  Time: %8.4d \n",
       pchFunc, pchEv, sCFDat.u8SourceAddress, psCfEvData->s16Handle, s32Time);
@@ -187,9 +187,6 @@ void OutputVtMessages(const ISOVT_MSG_STA_T* pIsoMsgSta, iso_s32 s32Time)
    case softkey_activation:
       iso_DebugPrint("SOFTKEY ACTIVATION: 0x%4.4x   %5d   %10d   Time: %8.4d\n", pIsoMsgSta->wObjectID, pIsoMsgSta->bPara, pIsoMsgSta->lValue, s32Time);
       break;
-   case button_activation:
-	  iso_DebugPrint("BUTTON ACTIVATION: 0x%4.4x   %5d   %10d   Time: %8.4d\n", pIsoMsgSta->wObjectID, pIsoMsgSta->bPara, pIsoMsgSta->lValue, s32Time);
-	  break;
    case auxiliary_assign_type_1:
       iso_DebugPrint("AUX TYP 1 ASSIGN:   0x%4.4x   %5d   Time: %8.4d\n", pIsoMsgSta->wObjectID, pIsoMsgSta->wPara1, s32Time);
       break;
@@ -289,7 +286,6 @@ static const  iso_char* NMUserFuncString(ISO_USERFUNC_e eIsoUserFunct)
    case bridged_cf:              pchFunc = "Bridged CF"; break;
 
    case datalogger:              pchFunc = "Data logger"; break;
-   case tim_client:              pchFunc = "TIM client"; break;
    case tim_server:              pchFunc = "TIM server"; break;
    case all_clients:             pchFunc = "all_clients"; break;
    case all_server:              pchFunc = "all_server"; break;
