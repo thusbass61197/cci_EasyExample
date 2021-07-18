@@ -51,7 +51,7 @@ static void CbVtStatus          (const ISOVT_STATUS_DATA_T* psStatusData);
 static void CbVtMessages        (const ISOVT_MSG_STA_T * pIsoMsgSta);
 static void CbAuxPrefAssignment (VT_AUXAPP_T asAuxAss[], iso_s16* ps16MaxNumberOfAssigns, ISO_USER_PARAM_T userParam);
 
-static void AppPoolSettings     (iso_u8 u8Instance);
+static void AppPoolSettings(const ISOVT_EVENT_DATA_T* psEvData);
 static void AppVTClientDoProcess(void);
 
 
@@ -100,7 +100,7 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
    {
    case IsoEvConnSelectPreferredVT:
       /* preferred VT is not alive, but one or more other VTs */
-      VTC_setNewVT(psEvData->u8Instance);
+      VTC_setNewVT(psEvData);
       break;
    case IsoEvMaskServerVersAvailable:
       if (IsoVtcGetStatusInfo(psEvData->u8Instance, VT_VERSIONNR) >= 4u)
@@ -121,7 +121,7 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
       }
       break;
    case IsoEvMaskLoadObjects:
-      AppPoolSettings(psEvData->u8Instance);
+      AppPoolSettings(psEvData);
       {  /* Current VT and boot time of VT can be read and stored here in EEPROM */
          iso_s16 s16HndCurrentVT = (iso_s16)IsoVtcGetStatusInfo(psEvData->u8Instance, VT_HND);   /* get CF handle of actual VT */
          ISO_CF_INFO_T cfInfo = {0};
@@ -148,7 +148,7 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
       break;
    case IsoEvMaskActivated:
       /* pool is ready - here we can setup the initial mask and data which should be displayed */
-	  VTC_setPoolReady(psEvData->u8Instance);
+	  VTC_setPoolReady(psEvData);
       break;
    case IsoEvMaskTick:  // Cyclic event; Called only after successful login
       AppVTClientDoProcess();   // Sending of commands etc. for mask instance
@@ -169,7 +169,7 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
       break;
    case IsoEvAuxLoadObjects:
       u8_CfAuxVtInstance = psEvData->u8Instance;
-      AppPoolSettings(psEvData->u8Instance);
+      AppPoolSettings(psEvData);
       break;
    case IsoEvAuxActivated:
       break;
@@ -199,7 +199,7 @@ static const char *POOL_FILENAME = "pools/MyProject1.iop";
 
 
 /* ************************************************************************ */
-static void AppPoolSettings( iso_u8 u8Instance )
+static void AppPoolSettings(const ISOVT_EVENT_DATA_T* psEvData)
 {
    static iso_u8*  pu8PoolData = 0;        // Pointer to the pool data ( Attention:  )
    static iso_u32  u32PoolSize = 0UL;
@@ -220,13 +220,13 @@ static void AppPoolSettings( iso_u8 u8Instance )
    {  // Set pool information
 
 
-	   (void)IsoVtcPoolInit( u8Instance, (const iso_u8*) ISO_VERSION_LABEL, pu8PoolData, 0,       // Instance, Version, PoolAddress, ( PoolSize not needed )
+	   (void)IsoVtcPoolInit( psEvData->u8Instance, (const iso_u8*) ISO_VERSION_LABEL, pu8PoolData, 0,       // Instance, Version, PoolAddress, ( PoolSize not needed )
 		                   u16NumberObjects, colour_256,     // Number of objects, Graphic typ, 
 						   ISO_DESIGNATOR_WIDTH, ISO_DESIGNATOR_HEIGHT, ISO_MASK_SIZE  );                   // SKM width and height, DM res.
    }
 
    // Set pool manipulations
-   VTC_setPoolManipulation( u8Instance );
+   VTC_setPoolManipulation( psEvData );
 
 }
 
