@@ -107,7 +107,7 @@ void app_main(void)
       /* run cyclic application function */
       AppIso_Cyclic();
 
-      hw_SimDoSleep(5);  // Simulate loop time "5ms"
+      hw_SimDoSleep(ISO_NM_LOOPTIME);  // Simulate loop time "5ms"
       DoKeyBoard();
    }
 
@@ -215,11 +215,10 @@ static iso_s16 CB_CanSend(iso_u8 canNode_u8, iso_u32 canId_u32, const iso_u8 can
 
 /*! \brief ISOBUS driver "Get CAN message FIFO size" callback function */
 static iso_s16 CB_GetSendMsgFiFoSize(iso_u8 u8CanNode, iso_u8 u8MsgPrio)
-{  /* we don't check here and return always 20 free buffer entries ... */
+{
     (void)u8CanNode;
     (void)u8MsgPrio;
-    return 20;
-   /* return hw_CanGetFreeSendMsgBufferSize(u8CanNode); */
+    return hw_CanGetFreeSendMsgBufferSize(u8CanNode);
 }
 
 /* ************************************************************************ */
