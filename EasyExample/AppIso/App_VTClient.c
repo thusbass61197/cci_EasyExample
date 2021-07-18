@@ -94,7 +94,7 @@ void AppVTClientLogin(iso_s16 s16CfHandle)
 /* ************************************************************************ */
 static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
 {
-   iso_u8 abLCData[6];
+   iso_u8 abLCData[8];  /* V12 provide country code: array must be at least 8 bytes (not only 6 bytes) */
 
    switch (psEvData->eEvent)
    {
