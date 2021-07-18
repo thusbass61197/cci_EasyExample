@@ -124,21 +124,21 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
       AppPoolSettings(psEvData);
       {  /* Current VT and boot time of VT can be read and stored here in EEPROM */
          iso_s16 s16HndCurrentVT = (iso_s16)IsoVtcGetStatusInfo(psEvData->u8Instance, VT_HND);   /* get CF handle of actual VT */
-         ISO_CF_INFO_T cfInfo = {0};
-         iso_s16 s16Err = iso_NmGetCfInfo( s16HndCurrentVT, &cfInfo );
+         ISO_CF_INFO_T cfInfo = { 0 };
+         iso_s16 s16Err = iso_NmGetCfInfo(s16HndCurrentVT, &cfInfo);
          if (s16Err == E_NO_ERR)
          {
-            uint64_t u64Name = ((uint64_t)(cfInfo.au8Name[0]))       |
-                               ((uint64_t)(cfInfo.au8Name[1]) <<  8) |
-                               ((uint64_t)(cfInfo.au8Name[2]) << 16) |
-                               ((uint64_t)(cfInfo.au8Name[3]) << 24) |
-                               ((uint64_t)(cfInfo.au8Name[4]) << 32) |
-                               ((uint64_t)(cfInfo.au8Name[5]) << 40) |
-                               ((uint64_t)(cfInfo.au8Name[6]) << 48) |
-                               ((uint64_t)(cfInfo.au8Name[7]) << 56);
+            uint64_t u64Name = ((uint64_t)(cfInfo.au8Name[0])) |
+               ((uint64_t)(cfInfo.au8Name[1]) << 8) |
+               ((uint64_t)(cfInfo.au8Name[2]) << 16) |
+               ((uint64_t)(cfInfo.au8Name[3]) << 24) |
+               ((uint64_t)(cfInfo.au8Name[4]) << 32) |
+               ((uint64_t)(cfInfo.au8Name[5]) << 40) |
+               ((uint64_t)(cfInfo.au8Name[6]) << 48) |
+               ((uint64_t)(cfInfo.au8Name[7]) << 56);
             setX64("CF-A", "preferredVT", u64Name);
 
-            iso_u8 u8BootTime = (iso_u8)IsoVtcGetStatusInfo (psEvData->u8Instance, VT_BOOTTIME );
+            iso_u8 u8BootTime = (iso_u8)IsoVtcGetStatusInfo(psEvData->u8Instance, VT_BOOTTIME);
             setU8("CF-A", "bootTimeVT", u8BootTime);
          }
       }
@@ -156,10 +156,12 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
    case IsoEvMaskLoginAborted:
       // Login failed - application has to decide if login shall be repeated and how often
       //AppVTClientLogin(s16_CfHndVtClient);
+      // u8_CfVtInstance = ISO_INSTANCE_INVALID; // we wait for IsoEvInstanceClosed event
       break;
    case IsoEvConnSafeState:
       // Connection closed ( VT lost, VT_LOGOUT (delete object pool response was received ) )
       break;
+// AUX function instance on primary VT (only if MASK instance is on a secondary VT)
    case IsoEvAuxServerVersAvailable:
       break;
    case IsoEvAuxLanguageCmd:
