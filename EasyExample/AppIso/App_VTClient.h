@@ -27,6 +27,8 @@ void    AppVTClientLogin(iso_s16 s16CfHandle);
 iso_s16 VTC_PoolDeleteVersion(void);
 iso_s16 VTC_PoolReload(void);
 iso_s16 VTC_NextVTButtonPressed(void);
+iso_s16 VTC_Restart(void);
+iso_s16 VTC_CloseInstance(void);
 
 
 /* ************************************************************************ */
