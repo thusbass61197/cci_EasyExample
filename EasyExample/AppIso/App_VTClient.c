@@ -470,7 +470,7 @@ static void CbAuxPrefAssignment(VT_AUXAPP_T asAuxAss[], iso_s16* ps16MaxNumberOf
 
 /* ************************************************************************ */
 // Multiple VT
-iso_s16 VTC_NextVTButtonPressed( )
+iso_s16 VTC_NextVTButtonPressed(void)
 {
    #define VT_LIST_MAX   5       /* Array size for VT cf handle entries */
 
@@ -506,6 +506,58 @@ iso_s16 VTC_NextVTButtonPressed( )
       // Application must go into safe state !!!
    }
    return 0;
+}
+
+/* ************************************************************************ */
+iso_s16 VTC_Restart(void)
+{
+   if (u8_CfVtInstance != ISO_INSTANCE_INVALID)
+   {  /* Hint: We allow the restart also during a possible pool load/upload/reload... */
+      iso_s16 s16Ret;
+      s16Ret = IsoVtcRestartInstance(u8_CfVtInstance, ISO_TRUE);
+      if ((s16Ret == E_NO_ERR) && (u8_poolChannel > 0)) {
+         poolFree(u8_poolChannel);  /* ... and close the pool channel in this case */
+      }
+   }
+   else if (s16_CfHndVtClient != HANDLE_UNVALID)
+   {  /* Test: Try to start again ... */
+      AppVTClientLogin(s16_CfHndVtClient);
+   }
+   else { /* no CF handle */}
+   return 0;
+}
+
+/* ************************************************************************ */
+iso_s16 VTC_CloseInstance(void)
+{
+   if (u8_CfVtInstance != ISO_INSTANCE_INVALID)
+   {
+      (void)IsoVtcCloseInstance(u8_CfVtInstance);
+   }
+   return 0;
+}
+
+/* ************************************************************************ */
+/* helper function  */
+static void fillAuxSectionName(iso_char auxSection[], iso_u32 u32ArraySize) // TODO: consider moving function to AppMemAccess.cpp
+{
+   const iso_char cName[] = "CF-A-AuxAssignment-";
+   iso_char au8Label[33];
+   iso_u8 u8Idx = 0u, u8Pos = 0u;
+   while ((cName[u8Idx] != 0) && (u8Idx < (u32ArraySize - 1UL)))
+   {
+      auxSection[u8Idx] = cName[u8Idx];
+      u8Idx++;
+   }
+   auxSection[u8Idx] = 0;
+   getString("ObjectPool", "label", "unknown", au8Label, 33U);
+   while ((au8Label[u8Pos] != 0) && (u8Idx < (u32ArraySize - 1UL)))
+   {
+      auxSection[u8Idx] = au8Label[u8Pos];
+      u8Idx++;
+      u8Pos++;
+   }
+   auxSection[u8Idx] = 0;
 }
 
 /* ************************************************************************ */
