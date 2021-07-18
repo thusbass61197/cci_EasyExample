@@ -49,7 +49,8 @@ static const twai_general_config_t g_config = {.mode = TWAI_MODE_NORMAL,
                                               .clkout_io = (gpio_num_t)TWAI_IO_UNUSED, .bus_off_io = (gpio_num_t)TWAI_IO_UNUSED,
                                               .tx_queue_len = 150, .rx_queue_len = 1000,
                                               .alerts_enabled = TWAI_ALERT_NONE,
-                                              .clkout_divider = 0};
+                                              .clkout_divider = 0,
+											  .intr_flags = ESP_INTR_FLAG_LEVEL1};
 
 
 /* ################### CAN Functions ################ */
