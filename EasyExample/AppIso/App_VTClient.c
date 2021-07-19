@@ -40,20 +40,25 @@
 #include "../Samples/VtcWithAuxPoolUpload/GAux.h"
 #endif // defined(_LAY6_) && defined(ISO_VTC_GRAPHIC_AUX)
 
+/* ****************************** defines  ******************************** */
+
 /* ****************************** global data   *************************** */
 static iso_s16  s16_CfHndVtClient = HANDLE_UNVALID;      // Stored CF handle of VT client
 static iso_u8   u8_CfVtInstance = ISO_INSTANCE_INVALID;  // Instance number of the VT client
 static iso_u8   u8_CfAuxVtInstance = ISO_INSTANCE_INVALID;  // Instance number of the Aux VT client
-
+static iso_u8   u8_poolChannel = 0U;   // pool channel for pool to be uploaded
+static iso_u8   u8_poolChannelAux = 0U;   // pool channel for pool to be uploaded to aux function only instance 
 /* ****************************** function prototypes ****************************** */
 static void CbVtConnCtrl        (const ISOVT_EVENT_DATA_T* psEvData);
 static void CbVtStatus          (const ISOVT_STATUS_DATA_T* psStatusData);
 static void CbVtMessages        (const ISOVT_MSG_STA_T * pIsoMsgSta);
-static void CbAuxPrefAssignment (VT_AUXAPP_T asAuxAss[], iso_s16* ps16MaxNumberOfAssigns, ISO_USER_PARAM_T userParam);
+static void CbAuxPrefAssignment (const VT_AUX_PREF_PARAM_T* psParams, VT_AUXAPP_T asAuxAss[], iso_s16* ps16MaxNumberOfAssigns);
 
 static void AppPoolSettings(const ISOVT_EVENT_DATA_T* psEvData);
 static void AppVTClientDoProcess(void);
 
+
+static void fillAuxSectionName(iso_char auxSection[], iso_u32 u32ArraySize);
 
 /* ************************************************************************ */
 void AppVTClientLogin(iso_s16 s16CfHandle)
@@ -75,13 +80,12 @@ void AppVTClientLogin(iso_s16 s16CfHandle)
 
    u8BootTime = getU8("CF-A", "bootTimeVT", 7u);
 
-   // Initialize the VT client instance
-   u8_CfVtInstance = IsoVT_CreateInstance(s16CfHandle, userParamVt, CbVtStatus, CbVtMessages, CbVtConnCtrl,
-                                          CAST_TO_CONST_ISONAME_PTR(&au8NamePreferredVT));
-   (void)IsoVtcDataSet(u8_CfVtInstance, VT_BOOTTIME, u8BootTime);   // Set (EE-stored) boot time of the preferred VT (in seconds)
+   // Initialize the VT client instance - Set (EE-stored) NAME and boot time of the preferred VT (in seconds)
+   u8_CfVtInstance = IsoVtcCreateInstance(s16CfHandle, userParamVt, CbVtStatus, CbVtMessages, CbVtConnCtrl, CbAuxPrefAssignment,
+                                          CAST_TO_CONST_ISONAME_PTR(&au8NamePreferredVT), u8BootTime);
    
    // Use preferred assignment callback function, which is called before sending the preferred assignment for the auxiliary functions to the VT
-   (void)IsoVtcAuxPrefAssignmentCbSet(u8_CfVtInstance, &CbAuxPrefAssignment);
+   // Deprecated - already set with IsoVtcCreateInstance(): (void)IsoVtcAuxPrefAssignmentCbSet(u8_CfVtInstance, &CbAuxPrefAssignment);
 
 #if defined(_LAY6_) && defined(ISO_VTC_GRAPHIC_AUX)
    /* Add CF to graphical aux implements */
@@ -450,21 +454,29 @@ iso_s16 VTC_PoolReload(void)
 
 /* ************************************************************************ */
 // Callback function for setting the preferred assignment
-static void CbAuxPrefAssignment(VT_AUXAPP_T asAuxAss[], iso_s16* ps16MaxNumberOfAssigns, ISO_USER_PARAM_T userParam)
+static void CbAuxPrefAssignment(const VT_AUX_PREF_PARAM_T* psParams, VT_AUXAPP_T asAuxAss[], iso_s16* ps16MaxNumberOfAssigns)
 {
-   iso_s16 s16I;
+   iso_s16 s16I = 0;
    iso_s16 s16NumbOfPrefAssigns = 0;
    VT_AUXAPP_T asPrefAss[20];
+   iso_char auxSection[64]; // storing aux assigns depending on the pool label
+   fillAuxSectionName(auxSection, 64U);
 
    /* Reading stored preferred assignment */
-   s16NumbOfPrefAssigns = getAuxAssignment("CF-A-AuxAssignment", asPrefAss);
+   s16NumbOfPrefAssigns = getAuxAssignment(auxSection, asPrefAss);
+
+   if (s16NumbOfPrefAssigns > *ps16MaxNumberOfAssigns)
+   {  /* we have more assignments than we can provide 
+         (Increase also ISO_AUX_ENTRIES_INSTANCE_MAX if needed... size of asAuxAss[] is ISO_AUX_ENTRIES_INSTANCE_MAX)  */
+      s16NumbOfPrefAssigns = *ps16MaxNumberOfAssigns;
+   }
 
    for (s16I = 0; s16I < s16NumbOfPrefAssigns; s16I++)
    {
       asAuxAss[s16I] = asPrefAss[s16I];
    }
    *ps16MaxNumberOfAssigns = s16NumbOfPrefAssigns;
-   (void)userParam;
+   (void)psParams;
 }
 
 
@@ -516,7 +528,7 @@ iso_s16 VTC_Restart(void)
       iso_s16 s16Ret;
       s16Ret = IsoVtcRestartInstance(u8_CfVtInstance, ISO_TRUE);
       if ((s16Ret == E_NO_ERR) && (u8_poolChannel > 0)) {
-         poolFree(u8_poolChannel);  /* ... and close the pool channel in this case */
+         //poolFree(u8_poolChannel);  /* ... and close the pool channel in this case */
       }
    }
    else if (s16_CfHndVtClient != HANDLE_UNVALID)
