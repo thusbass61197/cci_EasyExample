@@ -87,8 +87,6 @@ const unsigned char ISO_OP_MEMORY_CLASS isoOP_MyProject1[] = {
 	ID(OutputString_Reset_Tageszaehler), TYPEID_OUTSTR, WORD(112), WORD(52), COLOR_WHITE, ID(FontAttributes_Default), 3,
 		ID(ID_NULL), 5, WORD(12), 'R', 'e', 's', 'e', 't', '\r', '\n',
 		'T', 'a', 'g', 'e', 's', 0,
-	ID(OutputString_MinusMinus), TYPEID_OUTSTR, WORD(72), WORD(72), COLOR_WHITE, ID(FontAttributes_Button), 1,
-		ID(ID_NULL), 5, WORD(4), '-', '-', ' ', ' ', 0,
 	ID(OutputString_SoftKey_Reset_Gesamtzaehler), TYPEID_OUTSTR, WORD(72), WORD(72), COLOR_WHITE, ID(FontAttributes_Default), 3,
 		ID(ID_NULL), 5, WORD(13), 'R', 'e', 's', 'e', 't', '\r', '\n',
 		'G', 'e', 's', 'a', 'm', 't', 0,
@@ -231,5 +229,4 @@ const unsigned char ISO_OP_MEMORY_CLASS isoOP_MyProject1[] = {
 		XYREF(IconSoftKey_PlusPlus, 4, 4),
 	ID(AuxFunction2_MinusMinus), TYPEID_AUXFUNC2, COLOR(187), 130, 1, 
 		XYREF(Icon_SoftKey_MinusMinus, 4, 4),
-	ID(ExternalObjectDefinition_38000), TYPEID_EXTOBJDEF, 1, , 0,
 }; // isoOP_MyProject1

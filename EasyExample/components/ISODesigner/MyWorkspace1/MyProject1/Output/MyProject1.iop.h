@@ -26,7 +26,6 @@
 #define OutputString_Gesamtzaehler        11003
 #define OutputString_Tageszaehler         11004
 #define OutputString_Reset_Tageszaehler   11005
-#define OutputString_MinusMinus           11008
 #define OutputString_SoftKey_Reset_Gesamtzaehler  11009
 #define OutputString_SoftKey_Reset_Tageszaehler  11010
 #define OutputString_Ziel                 11011
@@ -56,4 +55,3 @@
 #define ObjectPointer_Gesamtziel          27003
 #define AuxFunction2_PlusPlus             29000
 #define AuxFunction2_MinusMinus           29001
-#define ExternalObjectDefinition_38000    38000
