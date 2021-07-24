@@ -27,14 +27,11 @@
 #include "App_VTClient.h"
 #include "VIEngine.h"
 #include "App_VTClientLev2.h"
-
+#if defined(CCI_USE_POOLBUFFER)
 #include "MyProject1.iop.h"
 #include "MyProject1.c.h"
-
-
-#if defined(linux)
-#include "pools/pool.iop.h"
-#endif // defined(linux)
+#endif /* defined(CCI_USE_POOLBUFFER) */
+#include "AppPool/AppPool.h"
 
 #if defined(_LAY6_) && defined(ISO_VTC_GRAPHIC_AUX)
 #include "../Samples/VtcWithAuxPoolUpload/GAux.h"
@@ -54,9 +51,10 @@ static void CbVtStatus          (const ISOVT_STATUS_DATA_T* psStatusData);
 static void CbVtMessages        (const ISOVT_MSG_STA_T * pIsoMsgSta);
 static void CbAuxPrefAssignment (const VT_AUX_PREF_PARAM_T* psParams, VT_AUXAPP_T asAuxAss[], iso_s16* ps16MaxNumberOfAssigns);
 
-static void AppPoolSettings(const ISOVT_EVENT_DATA_T* psEvData);
+static void AppPoolSettings(const ISOVT_EVENT_DATA_T* psEvData, iso_u8* pu8PoolChannel);
 static void AppVTClientDoProcess(void);
 
+static void VTC_SetObjValuesBeforeStore(iso_u8 u8Instance);
 
 static void fillAuxSectionName(iso_char auxSection[], iso_u32 u32ArraySize);
 
@@ -102,6 +100,27 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
 
    switch (psEvData->eEvent)
    {
+   case IsoEvInstanceClosed:
+      if (psEvData->u8Instance == u8_CfVtInstance)
+      {  // MASK instance
+         u8_CfVtInstance = ISO_INSTANCE_INVALID;
+         if (u8_poolChannel > 0u)
+         {
+            poolFree(u8_poolChannel);
+            u8_poolChannel = 0;
+         }
+      }
+
+      if (psEvData->u8Instance == u8_CfAuxVtInstance)
+      {  // AUX instance
+         u8_CfAuxVtInstance = ISO_INSTANCE_INVALID;
+         if (u8_poolChannelAux > 0u)
+         {
+            poolFree(u8_poolChannelAux);
+            u8_poolChannelAux = 0;
+         }
+      }
+      break;
    case IsoEvConnSelectPreferredVT:
       /* preferred VT is not alive, but one or more other VTs */
       VTC_setNewVT(psEvData);
@@ -125,7 +144,15 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
       }
       break;
    case IsoEvMaskLoadObjects:
-      AppPoolSettings(psEvData);
+      /* provide pool */
+      AppPoolSettings(psEvData, &u8_poolChannel);
+      break;
+   case IsoEvMaskReadyToStore:
+      /* pool upload finished - here we can change objects values which should be stored */
+      VTC_SetObjValuesBeforeStore(psEvData->u8Instance);
+      break;
+   case IsoEvMaskActivated:
+      /* pool is ready - here we can setup the initial mask and data which should be displayed */
       {  /* Current VT and boot time of VT can be read and stored here in EEPROM */
          iso_s16 s16HndCurrentVT = (iso_s16)IsoVtcGetStatusInfo(psEvData->u8Instance, VT_HND);   /* get CF handle of actual VT */
          ISO_CF_INFO_T cfInfo = { 0 };
@@ -146,13 +173,15 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
             setU8("CF-A", "bootTimeVT", u8BootTime);
          }
       }
-      break;
-   case IsoEvMaskReadyToStore:
-      /* pool upload finished - here we can change objects values which should be stored */
-      break;
-   case IsoEvMaskActivated:
-      /* pool is ready - here we can setup the initial mask and data which should be displayed */
-	  VTC_setPoolReady(psEvData);
+      // no break -> free pool
+      /* fall through */
+
+   case IsoEvMaskPoolReloadFinished:
+      if (u8_poolChannel > 0u)
+      {
+         poolFree(u8_poolChannel);
+         u8_poolChannel = 0;
+      }
       break;
    case IsoEvMaskTick:  // Cyclic event; Called only after successful login
       AppVTClientDoProcess();   // Sending of commands etc. for mask instance
@@ -175,15 +204,23 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
       break;
    case IsoEvAuxLoadObjects:
       u8_CfAuxVtInstance = psEvData->u8Instance;
-      AppPoolSettings(psEvData);
-      break;
-   case IsoEvAuxActivated:
-      break;
-   case IsoEvAuxTick:
+      AppPoolSettings(psEvData, &u8_poolChannelAux);
       break;
    case IsoEvAuxLoginAborted:
       // Login failed - application has to decide if login shall be repeated and how often
-      u8_CfAuxVtInstance = ISO_INSTANCE_INVALID;
+      // u8_CfAuxVtInstance = ISO_INSTANCE_INVALID; // we wait for IsoEvInstanceClosed event
+      break;
+   case IsoEvAuxReadyToStore:       
+      break;
+   case IsoEvAuxPoolReloadFinished: // currently not possible/used
+   case IsoEvAuxActivated:          // aux instance pool loaded
+      if (u8_poolChannelAux > 0u)
+      {  // free pool 
+         poolFree(u8_poolChannelAux);
+         u8_poolChannelAux = 0;
+      }
+      break;
+   case IsoEvAuxTick:
       break;
    default:
       break;
@@ -205,35 +242,36 @@ static const char *POOL_FILENAME = "pools/MyProject1.iop";
 
 
 /* ************************************************************************ */
-static void AppPoolSettings(const ISOVT_EVENT_DATA_T* psEvData)
+static void AppPoolSettings(const ISOVT_EVENT_DATA_T* psEvData, iso_u8* pu8PoolChannel)
 {
-   static iso_u8*  pu8PoolData = 0;        // Pointer to the pool data ( Attention:  )
-   static iso_u32  u32PoolSize = 0UL;
-   static iso_u16  u16NumberObjects;
+   const iso_u8*  pu8PoolData;        // Pointer to the pool data ( Attention:  )
+   iso_u32  u32PoolSize;
+
    
-	u32PoolSize = LoadPoolFromFile(POOL_FILENAME, &pu8PoolData);
 
-#if defined(linux)
-	if ((u32PoolSize == 0) || (pu8PoolData == 0))
-    {
-        pu8PoolData = (iso_u8*)&pool_iop[0];
-        u32PoolSize = sizeof(pool_iop);
-    }
-#endif // defined(linux)
-
-	u16NumberObjects = IsoGetNumofPoolObjs(pu8PoolData, (iso_s32)u32PoolSize);
-
-   {  // Set pool information
-
-
-	   (void)IsoVtcPoolInit( psEvData->u8Instance, (const iso_u8*) ISO_VERSION_LABEL, pu8PoolData, 0,       // Instance, Version, PoolAddress, ( PoolSize not needed )
-		                   u16NumberObjects, colour_256,     // Number of objects, Graphic typ, 
-						   ISO_DESIGNATOR_WIDTH, ISO_DESIGNATOR_HEIGHT, ISO_MASK_SIZE  );                   // SKM width and height, DM res.
+   if (*pu8PoolChannel > 0)
+   {  // clean-up a previously open pool.
+      poolFree(*pu8PoolChannel);  
    }
+
+#if !defined(CCI_USE_POOLBUFFER)
+   *pu8PoolChannel = poolLoadByFilename(POOL_FILENAME);
+#else // !defined(CCI_USE_POOLBUFFER)
+   *pu8PoolChannel = poolLoadByByteArray((iso_u8*)&pool_iop[0], sizeof(pool_iop));
+#endif // !defined(CCI_USE_POOLBUFFER)
+
+   poolOpen(*pu8PoolChannel, colour_256); // open a complete pool for a 256 colour VT
+   u32PoolSize = (uint32_t)poolGetSize(*pu8PoolChannel);
+   pu8PoolData = poolGetData(*pu8PoolChannel);
+
+   IsoVtcPoolLoad(u8Instance, au8PoolVersionLabel, // Instance, Version,
+      ISO_DESIGNATOR_WIDTH, ISO_DESIGNATOR_HEIGHT, ISO_MASK_SIZE,                                 // SKM width and height, DM res.
+      PoolTransferFlash,
+      pu8PoolData, u32PoolSize,                    // PoolAddress, PoolSize (optional),
+      0, 0, 0);
 
    // Set pool manipulations
    VTC_setPoolManipulation( psEvData );
-
 }
 
 /* ************************************************************************ */
@@ -355,12 +393,14 @@ static void CbVtMessages( const ISOVT_MSG_STA_T * pIsoMsgSta )
        /* Assignment is stored only in case of Byte 10, Bit 7 is zero (use as preferred assignment) */
        if ( pIsoMsgSta->bPara != 0 )
        {
-#if(0)
+          iso_char auxSection[64]; // storing aux assigns depending on the pool label
+          fillAuxSectionName(auxSection, 64U);
+#if (0)   // sample - read every time all assignments
           static iso_s16  iNumberOfFunctions = 0;
           static VT_AUXAPP_T asAuxAss[20];      // AUXINPUTMAX !
           /* Reading the complete actual assignment and storing this in a file or EE */
           IsoAuxAssignmentRead(asAuxAss, &iNumberOfFunctions);
-          setAuxAssignment("CF-A-AuxAssignment", asAuxAss, iNumberOfFunctions);
+          setAuxAssignment(auxSection, asAuxAss, iNumberOfFunctions);
           //IsoAuxWriteAssignToFile(asAuxAss, iNumberOfFunctions);  // Assignment -> File
 #else
           if (pIsoMsgSta->wObjectID != NULL_OBJECTID)
@@ -374,7 +414,7 @@ static void CbVtMessages( const ISOVT_MSG_STA_T * pIsoMsgSta )
              auxEntry.qPrefAssign = pIsoMsgSta->bPara;
              auxEntry.bFuncAttribute = (iso_u8)(pIsoMsgSta->wPara2);
              iso_ByteCpyHuge(auxEntry.baAuxName, &pIsoMsgSta->pabVtData[0], 8);
-             updateAuxAssignment("CF-A-AuxAssignment", &auxEntry);
+             updateAuxAssignment(auxSection, &auxEntry);
           }
 #endif
        }
@@ -387,41 +427,22 @@ static void CbVtMessages( const ISOVT_MSG_STA_T * pIsoMsgSta )
    }
 }
 
+static void VTC_SetObjValuesBeforeStore(iso_u8 u8Instance)
+{
+
+
+
+}
 
 /* ************************************************************************ */
 // Delete stored pool
 iso_s16 VTC_PoolDeleteVersion(void)
 {  
-#if 1 // for V11.xx
-      // with V11 - String must be zero terminated (or should be 32 bytes long)
+   // with V11 - String must be zero terminated (or should be 32 bytes long)
    iso_s16 s16Ret;
    iso_u8 au8VersionString[] = "       "; // We use spaces to delete the last stored pool from flash
    s16Ret = IsoVtcCmd_DeleteVersion(u8_CfVtInstance, au8VersionString);
    return s16Ret;
-#else // for V10.xx 
-   iso_s16 s16Ret = E_NO_INSTANCE;
-   // If called outside of a callback function, we must set the VT client instance before calling any other API function 
-   if (IsoWsSetMaskInst(s16_CfHndVtClient) == E_NO_ERR)
-   {
-      iso_u8 au8VersionString[] = "       "; // We use spaces to delete the last stored pool from flash
-      iso_u16 u16WSVersion, u16VTVersion;
-      // ISO version string (C-string with termination or 32 bytes; if VT < 5: only 7 Bytes used )
-      u16WSVersion = IsoGetVTStatusInfo(WS_VERSION_NR);
-      u16VTVersion = IsoGetVTStatusInfo(VT_VERSIONNR);
-      if ((u16WSVersion >= VT_V5_SE_UT3) && (u16VTVersion >= VT_V5_SE_UT3))
-      {  // 32 byte version label -> use IsoExtendedDeleteVersion()
-         #ifdef ISO_VTC_UT3 /* only if compiled for UT3 */
-         s16Ret = IsoExtendedDeleteVersion(au8VersionString);
-         #endif /* ISO_VTC_UT3 */
-      }
-      else
-      {  // 7 byte version label -> use IsoDeleteVersion()
-         s16Ret = IsoDeleteVersion(au8VersionString);
-      }
-   }
-
-   return s16Ret;
-#endif /* 0 */
 }
 
 /* ************************************************************************ */
@@ -430,23 +451,38 @@ iso_s16 VTC_PoolReload(void)
 {
    iso_s16 iRet = E_NO_ERR;
    /* pointer to the pool data */
-   static iso_u8*  pu8PoolData = 0;
-   static iso_u32  u32PoolSize = 0UL;
-   static iso_u16  u16NumberObjects;
+   const iso_u8*  pu8PoolData = 0;
+   iso_u32  u32PoolSize = 0UL;
+   iso_char poolFileName[128];
 
-   u32PoolSize = LoadPoolFromFile(POOL_FILENAME, &pu8PoolData);
-   u16NumberObjects = IsoGetNumofPoolObjs(pu8PoolData, (iso_s32)u32PoolSize);
-   if (IsoVtcPoolReload(u8_CfVtInstance, pu8PoolData, u16NumberObjects))
+   getString("ObjectPool", "file_de", "pools/pool_de.iop", poolFileName, 128U);
+
+   if (u8_poolChannel == 0)
+   {
+      #if !defined(CCI_USE_POOLBUFFER)
+      u8_poolChannel = poolLoadByFilename(poolFileName);
+      #else // !defined(CCI_USE_POOLBUFFER)
+      u8_poolChannel = poolLoadByByteArray((iso_u8*)&pool_iop[0], sizeof(pool_iop));
+      #endif // !defined(CCI_USE_POOLBUFFER)
+   }
+
+   poolOpen(u8_poolChannel, colour_256); // open a complete pool for a 256 colour VT
+   u32PoolSize = (uint32_t)poolGetSize(u8_poolChannel);
+   pu8PoolData = poolGetData(u8_poolChannel);
+
+   if (IsoVtcPoolUpdate(u8_CfVtInstance, PoolTransferFlash, pu8PoolData, u32PoolSize, 0))
    {
       //iso_u16 wSKM_Scal = 0u;
-      /* Reload ranges */
-
+      /* remove font from language pool (included from IsoDesigner)) */
+      IsoVtcPoolSetIDRangeMode(u8_CfVtInstance, 23000, 23000, 0, NotLoad);
       /* Manipulating these objects */
       //wSKM_Scal = (iso_u16)IsoVtcPoolReadInfo(u8_CfVtInstance, PoolSoftKeyMaskScalFaktor);
-
+      //sample IsoVtcPoolSetIDRangeMode(u8_CfVtInstance, 40012, 40012, wSKM_Scal, Centering);  /* Auxiliary function */
    }
    else
-   {
+   {  // reload not possible - free pool
+      poolFree(u8_poolChannel);
+      u8_poolChannel = 0;
       iRet = E_ERROR_INDI;
    }
    return iRet;
@@ -528,7 +564,7 @@ iso_s16 VTC_Restart(void)
       iso_s16 s16Ret;
       s16Ret = IsoVtcRestartInstance(u8_CfVtInstance, ISO_TRUE);
       if ((s16Ret == E_NO_ERR) && (u8_poolChannel > 0)) {
-         //poolFree(u8_poolChannel);  /* ... and close the pool channel in this case */
+         poolFree(u8_poolChannel);  /* ... and close the pool channel in this case */
       }
    }
    else if (s16_CfHndVtClient != HANDLE_UNVALID)
