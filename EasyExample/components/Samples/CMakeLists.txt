@@ -3,12 +3,14 @@
 
 set(COMPONENT_SRCS 
   "AddOn/AppIso_Output.c"
+  "VtcWithAuxPoolUpload/GAux.c"
 )
 
 set(COMPONENT_ADD_INCLUDEDIRS 
   "."
   ".."
   "AddOn"
+  "VtcWithAuxPoolUpload"
 )
 
 set(COMPONENT_REQUIRES 
