@@ -3,20 +3,22 @@
 
 
 set(COMPONENT_SRCS 
-  "AppOutput.c"
-  "AppHW.cpp"
-  "AppUtil.c"
+  "AppPool.cpp"
+
 )
 
 set(COMPONENT_ADD_INCLUDEDIRS 
   "."
 )
 
+
 set(COMPONENT_REQUIRES 
 )
 
-set(COMPONENT_PRIV_REQUIRES lib_cci Settings IsoConfig
+set(COMPONENT_PRIV_REQUIRES 
+	lib_cci 
+	IsoConfig 
+	AppCommon
 )
 
 register_component()
-

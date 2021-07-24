@@ -18,8 +18,8 @@
 #include "App_TCClient.h"
 #endif /* _LAY10_ */
 
-#include "AppCommon/AppOutput.h"
-#include "Settings/settings.h"
+#include "AppOutput.h"
+#include "settings.h"
 #if defined(ISO_CLIENT_NETWORK_DISTRIBUTOR)
 #include "CoreBaseFiFo/ClientBaseThreading.h"
 #endif /* defined(ISO_CLIENT_NETWORK_DISTRIBUTOR) */

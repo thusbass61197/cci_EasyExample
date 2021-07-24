@@ -25,7 +25,7 @@
 #include "MyProject1.iop.h"
 #include "MyProject1.c.h"
 
-#include "Settings/settings.h"
+#include "settings.h"
 
 #include "esp_log.h"
 

@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include "AppHW.h"
+#include "CanDriverEsp32.h"
 #include "driver/twai.h"
 #if defined(CONFIG_CAN2IP_MODE_ON)
    #include "can2ip_interface.h"

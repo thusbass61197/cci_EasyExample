@@ -9,6 +9,7 @@
 #include "esp_err.h"
 #include "esp_log.h"
 #include "esp_system.h"
+#include "SerialNumber.h"
 
 static const char *TAG = "SerialNumber";
 

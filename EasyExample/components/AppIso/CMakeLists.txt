@@ -25,6 +25,11 @@ set(COMPONENT_PRIV_REQUIRES
 	ISODesigner 
 	Settings 
 	AppCommon 
+	AppPool
+	Diagnostic 
+	spiffs
+	AppCanDriverEsp32
+	AddOn
 )
 
 register_component()

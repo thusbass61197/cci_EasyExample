@@ -23,12 +23,12 @@
 #include "App_Base.h"
 
 
-#include "AppCommon/AppOutput.h"
-#include "Settings/settings.h"
+#include "AppOutput.h"
+#include "settings.h"
 #include "App_VTClient.h"  /* needed only for DoKeyBoard() */
-//#include "App_TCClient.h"  /* needed only for DoKeyBoard() */
+#include "App_TCClient.h"  /* needed only for DoKeyBoard() */
 
-#include "../Samples/AddOn/AppIso_Output.h"  /* relative to IsoLib */
+#include "AppIso_Output.h"  /* relative to IsoLib */
 #include "AppIso_Diagnostic.h"
 #include "sdkconfig.h"
 

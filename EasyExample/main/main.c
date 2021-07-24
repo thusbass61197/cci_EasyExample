@@ -7,6 +7,7 @@
    CONDITIONS OF ANY KIND, either express or implied.
 */
 #include <stdio.h>
+#include "AppHW.h"
 #include "sdkconfig.h"
 
 #include "IsoCommonDef.h"

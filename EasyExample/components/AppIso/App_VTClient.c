@@ -20,18 +20,22 @@
 
 #ifdef _LAY6_  /* compile only if VT client is enabled */
 
-#include "Settings/settings.h"
+#include "settings.h"
 #include "AppMemAccess.h"
-#include "AppCommon/AppOutput.h"
+#include "AppOutput.h"
 
 #include "App_VTClient.h"
 #include "VIEngine.h"
 #include "App_VTClientLev2.h"
-#if defined(CCI_USE_POOLBUFFER)
+
 #include "MyProject1.iop.h"
 #include "MyProject1.c.h"
+
+
+#if defined(CCI_USE_POOLBUFFER)
+
 #endif /* defined(CCI_USE_POOLBUFFER) */
-#include "AppPool/AppPool.h"
+#include "AppPool.h"
 
 #if defined(_LAY6_) && defined(ISO_VTC_GRAPHIC_AUX)
 #include "../Samples/VtcWithAuxPoolUpload/GAux.h"
@@ -264,7 +268,7 @@ static void AppPoolSettings(const ISOVT_EVENT_DATA_T* psEvData, iso_u8* pu8PoolC
    u32PoolSize = (uint32_t)poolGetSize(*pu8PoolChannel);
    pu8PoolData = poolGetData(*pu8PoolChannel);
 
-   IsoVtcPoolLoad(u8Instance, au8PoolVersionLabel, // Instance, Version,
+   IsoVtcPoolLoad(psEvData->u8Instance, (iso_u8 *)ISO_VERSION_LABEL, // Instance, Version,
       ISO_DESIGNATOR_WIDTH, ISO_DESIGNATOR_HEIGHT, ISO_MASK_SIZE,                                 // SKM width and height, DM res.
       PoolTransferFlash,
       pu8PoolData, u32PoolSize,                    // PoolAddress, PoolSize (optional),
