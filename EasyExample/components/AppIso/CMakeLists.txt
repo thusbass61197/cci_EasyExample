@@ -27,7 +27,6 @@ set(COMPONENT_PRIV_REQUIRES
 	AppCommon 
 	AppPool
 	Diagnostic 
-	spiffs
 	AppCanDriverEsp32
 	Samples
 	SerialNumber
