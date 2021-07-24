@@ -389,8 +389,8 @@ This define replaces RAMSIZEPOOL */
 #define ISO_DEBUG_USE_EXTERN_FUNCTIONS // intern states to output window else in to cout
 
 #define ISO_DIAG_EXTERNAL
-//#define ISO_VTC_GRAPHIC_AUX
-//#define CCI_CUSTOM_GAUX_VT_STATUS
+#define ISO_VTC_GRAPHIC_AUX
+#define CCI_CUSTOM_GAUX_VT_STATUS
 #define ISO_NM_MSG_MONITOR
 #define DISABLE_CMDLINE_PARSING
 

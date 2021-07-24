@@ -62,6 +62,15 @@ static void VTC_SetObjValuesBeforeStore(iso_u8 u8Instance);
 
 static void fillAuxSectionName(iso_char auxSection[], iso_u32 u32ArraySize);
 
+
+#if defined(ESP_PLATFORM)
+static const char *POOL_FILENAME = "/spiffs/pools/MyProject1.iop";
+#else
+static const char *POOL_FILENAME = "pools/MyProject1.iop";
+#endif // defined(ESP_PLATFORM)
+
+
+
 /* ************************************************************************ */
 void AppVTClientLogin(iso_s16 s16CfHandle)
 {
@@ -91,7 +100,7 @@ void AppVTClientLogin(iso_s16 s16CfHandle)
 
 #if defined(_LAY6_) && defined(ISO_VTC_GRAPHIC_AUX)
    /* Add CF to graphical aux implements */
-   (void)vtcGAux_CfInit(s16CfHandle, userParamVt, "pools/Pool.iop");
+   (void)vtcGAux_CfInit(s16CfHandle, userParamVt, POOL_FILENAME);
 #endif // defined(_LAY6_) && defined(ISO_VTC_GRAPHIC_AUX)
 
    s16_CfHndVtClient = s16CfHandle; // Store VT client CF handle
@@ -157,6 +166,7 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
       break;
    case IsoEvMaskActivated:
       /* pool is ready - here we can setup the initial mask and data which should be displayed */
+	  VTC_setPoolReady(psEvData);
       {  /* Current VT and boot time of VT can be read and stored here in EEPROM */
          iso_s16 s16HndCurrentVT = (iso_s16)IsoVtcGetStatusInfo(psEvData->u8Instance, VT_HND);   /* get CF handle of actual VT */
          ISO_CF_INFO_T cfInfo = { 0 };
@@ -238,11 +248,6 @@ static void AppVTClientDoProcess( void )
 }
 
 
-#if defined(ESP_PLATFORM)
-static const char *POOL_FILENAME = "/spiffs/pools/MyProject1.iop";
-#else
-static const char *POOL_FILENAME = "pools/MyProject1.iop";
-#endif // defined(ESP_PLATFORM)
 
 
 /* ************************************************************************ */

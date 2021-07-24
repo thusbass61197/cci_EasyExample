@@ -13,14 +13,19 @@
 #include "IsoCommonDef.h"
 #include "IsoCommonApi.h"
 #include "settings.h"
+#include "esp_err.h"
+#include "spiffs_access.h"
 extern int isobus_main(int_t argc, char_t* argv[]);
 void app_main(void)
 {
 
-
-
-
 	hw_DebugPrint("app_main \n");
+
+
+	/* Initialize file storage */
+	ESP_ERROR_CHECK(init_spiffs());
+
+
 	/* Initialize application */
 	Settings_init();
 

@@ -45,14 +45,14 @@ typedef struct {
 } CommandTranslateObject;
 
 CommandTranslateObject CommandTranslate[] = {
-{ AuxFunction2_PlusPlus,		SoftKey_PlusPlus		} //	0
-
+	{ AuxFunction2_PlusPlus,		SoftKey_PlusPlus		}, //	0
+	{ AuxFunction2_MinusMinus,		SoftKey_MinusMinus		} //	1
 };
 
 
 //make this Defines (Right side)
 const int FIRST_AUX = AuxFunction2_PlusPlus;
-const int  LAST_AUX = AuxFunction2_PlusPlus;
+const int  LAST_AUX = AuxFunction2_MinusMinus;
 //do not Change this.
 const int  NUM_AUX_FUNCTIONS = ((LAST_AUX-FIRST_AUX)+1);
 iso_s32 InputSignalData_old_value1[20] = {AUX_PRESS_OFF};
