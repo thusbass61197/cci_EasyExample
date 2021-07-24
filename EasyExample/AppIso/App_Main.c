@@ -70,10 +70,16 @@ static void Do_ReceiveCanMessages(void);
 
 /* **************************  module global data  ************************ */
 
+iso_bool b__AppRuning = ISO_TRUE;
+
 /* ************************************************************************ */
 /*! \brief Sample main function */
 void app_main(void)
 {
+#if !defined(DISABLE_CMDLINE_PARSING)
+   hw_SetConfiguration(argc, argv);
+#endif 
+   PrintKeyBoard();
    hw_DebugPrint("ISO Application starts \n");
    /* Initialize application */
    Settings_init();
@@ -85,8 +91,14 @@ void app_main(void)
       iso_s16 s16Ret = hw_CanSendMsg(ISO_CAN_VT, 0x18000000, abData, 8);
       if (s16Ret < 0)
       {
+         #if defined(linux)
+         hw_DebugPrint("CAN bus error - check socket CAN configuration \n");
+         #else
          hw_DebugPrint("CAN bus error - check WHEPS_candriver.ini in build bin folder \n");
-         while (1);
+         #endif 
+         while (hw_SimGetKbHit() == 0);
+         hw_Shutdown();
+         return 1;
       }
    }
 #endif 
@@ -102,7 +114,7 @@ void app_main(void)
 	hw_DebugPrint("app_main_tcp DONE");
 #endif
    /* sample main loop */
-   while (hw_PowerSwitchIsOn())
+   while (hw_PowerSwitchIsOn() && (b__AppRuning == ISO_TRUE))
    {
       /* run cyclic application function */
       AppIso_Cyclic();
@@ -113,7 +125,7 @@ void app_main(void)
 
    hw_Shutdown();
 
-   return;
+   return 0;
 }
 
 /* **************************  implementation - public functions  ********* */
@@ -154,7 +166,9 @@ void AppIso_Init(void)
    s16FnRet = iso_BaseInit(CB_GetTimeMs, CB_Watchdog, CB_ReportError, 0, 0);
 #endif /* not defined(ISO_MODULE_CLIENTS) */
    s16Ret = (s16Ret == E_NO_ERR) ? s16FnRet : s16Ret;
+#if defined(ISO_MODULE_DIAG)
    iso_BaseDiagSetCbForResp(&processPart12PGN);
+#endif /* defined(ISO_MODULE_DIAG) */
 
 #if defined(ISO_MODULE_CLIENTS) /* same as #if defined(_LAY6_) || defined(_LAY10_) || defined(_LAY13_) || ... */
    /* Initialize the ISOBUS driver library clients modules (Hint: LAY14 only in combination with LAY6) */
@@ -163,14 +177,12 @@ void AppIso_Init(void)
 #endif /* ISO_MODULE_CLIENTS */
 
    /* Initialize ISOBUS implement sample */
-   AppImpl_Ignition(ISO_TRUE);
+   AppImpl_Ignition(ISO_TRUE, 0);
    
    if (s16Ret != E_NO_ERR)
    {
       hw_LogError("AppIso_Init error: %i \n", s16Ret);
    }
-
-   PrintKeyBoard();
 }
 
 /* ************************************************************************ */
@@ -269,14 +281,18 @@ static void Do_ReceiveCanMessages(void)
 
 static void PrintKeyBoard(void)
 {
-   hw_DebugPrint("F1 - \n");
-   hw_DebugPrint("F2 - \n");
-   hw_DebugPrint("F3 - \n");
-   hw_DebugPrint("F4 - VT - Delete stored pool\n");
-   hw_DebugPrint("F5 - VT - Pool reload\n");
-   hw_DebugPrint("F6 - VT - Move to another VT\n");
-   hw_DebugPrint("F7 - \n");
-   hw_DebugPrint("F8 - \n\n");
+   hw_DebugPrint("\nCommands:\n");
+   hw_DebugPrint("1 - \n");
+   hw_DebugPrint("2 - VT - Close VT client \n");
+   hw_DebugPrint("3 - VT - Restart VT client\n");
+   hw_DebugPrint("4 - VT - Delete stored pool\n");
+   hw_DebugPrint("5 - VT - Pool reload\n");
+   hw_DebugPrint("6 - VT - Move to another VT\n");
+   hw_DebugPrint("7 - \n");
+   hw_DebugPrint("8 - \n\n");
+   hw_DebugPrint("h - Help \n");
+   hw_DebugPrint("q - Quit\n\n");
+
 }
 
 
@@ -287,38 +303,47 @@ static void DoKeyBoard(void)
       int_t c = hw_SimGetCharEx(ISO_TRUE);
       switch (c)
       {
-      case 59:
-         hw_DebugPrint("F1  \n");
+      case '1':
+         hw_DebugPrint("1  \n");
          break;
-      case 60:
-         hw_DebugPrint("F2  \n");
+      case '2':
+         hw_DebugPrint("2  - Close VT client \n");
+         VTC_CloseInstance();
          break;
-      case 61:
-         hw_DebugPrint("F3  \n");
+      case '3':
+         hw_DebugPrint("3 - Restart VT client \n");
+         VTC_Restart();
          break;
 #if defined(_LAY6_)
-      case 62:
-         hw_DebugPrint("F4 - Delete stored pool \n");
+      case '4':
+         hw_DebugPrint("4 - Delete stored pool \n");
          VTC_PoolDeleteVersion();
          break;
-      case 63:
-         hw_DebugPrint("F5 - Start Pool reload \n");
+      case '5':
+         hw_DebugPrint("5 - Start Pool reload \n");
          VTC_PoolReload();
          break;
-      case 64:
-         hw_DebugPrint("F6 - Move to another VT\n");
+      case '6':
+         hw_DebugPrint("6 - Move to another VT\n");
          VTC_NextVTButtonPressed();
          break;
 
 #endif /* defined(_LAY6_) */
 #if defined(_LAY10_)
-      case 65:
-         hw_DebugPrint("F7 - \n");
+      case '7':
+         hw_DebugPrint("7 - \n");
          break;
-      case 66: 
-         hw_DebugPrint("F8 - \n"); 
+      case '8': 
+         hw_DebugPrint("8 - \n"); 
          break;
 #endif /* defined(_LAY10_) */
+      case 'h':
+         PrintKeyBoard();
+         break;
+      case 'q':
+         hw_DebugPrint("quit \n");
+         b__AppRuning = ISO_FALSE;
+         break;
       default: break;
       }
    }
