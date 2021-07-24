@@ -157,6 +157,7 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
       break;
    case IsoEvMaskActivated:
       /* pool is ready - here we can setup the initial mask and data which should be displayed */
+	  VTC_setPoolReady(psEvData);
       {  /* Current VT and boot time of VT can be read and stored here in EEPROM */
          iso_s16 s16HndCurrentVT = (iso_s16)IsoVtcGetStatusInfo(psEvData->u8Instance, VT_HND);   /* get CF handle of actual VT */
          ISO_CF_INFO_T cfInfo = { 0 };
