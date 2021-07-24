@@ -14,12 +14,15 @@
 
 #include "IsoDef.h"
 #include "App_VTClient.h"
+#ifdef _LAY10_
 #include "App_TCClient.h"
+#endif /* _LAY10_ */
 
 #include "AppCommon/AppOutput.h"
 #include "Settings/settings.h"
-
-#include "AppIso_Diagnostic.h"
+#if defined(ISO_CLIENT_NETWORK_DISTRIBUTOR)
+#include "CoreBaseFiFo/ClientBaseThreading.h"
+#endif /* defined(ISO_CLIENT_NETWORK_DISTRIBUTOR) */
 
 #define SA_PREFERRED     0x8Cu      // Preferred source address of CF
 
@@ -39,7 +42,7 @@ static iso_s16 s16NmAlDestTest    = HANDLE_UNVALID;
 static iso_s16 s16HaAlWhSpeedDis = HANDLE_UNVALID;
 
 /* ****************************** function prototypes ******************** */
-static void  AppImp_Reset( void );
+static void  AppImp_Reset(iso_u8 funcInstance);
 static void  CbIsoNetwork( const ISONETEVENT_T* psNetEv );
 static void  CbIsoDataLink(ISO_TPREP_E eDataTransStatus, const ISO_TPINFO_T* psTpInfo);
 #if defined(ISO_MODULE_CLIENTS)
@@ -55,11 +58,12 @@ static void  App_SetDTCforAddressViolation(iso_u8 u8SA);
 
 extern uint32_t  u32SeriNoGet(void);
 
-void AppImpl_Ignition( iso_bool qIgnition )
+
+void AppImpl_Ignition( iso_bool qIgnition, iso_u8 funcInstance)
 {
    if( qIgnition == ISO_TRUE && q_Ignition == ISO_FALSE )
    {
-      AppImp_Reset( );     //Power on event
+      AppImp_Reset(funcInstance);     //Power on event
    }
    if( qIgnition == ISO_FALSE && q_Ignition == ISO_TRUE)
    { 
@@ -80,7 +84,7 @@ void AppImpl_doProcess()
 
 // ***************************************************************************************
 // Start implement
-static void AppImp_Reset( void )
+static void AppImp_Reset(iso_u8 funcInstance)
 {
    ISO_CF_NAME_T     au8CfName;
    ISO_USER_PARAM_T  userParamCf = ISO_USER_PARAM_DEFAULT;
@@ -110,10 +114,12 @@ static void AppImp_Reset( void )
       CbIsoDataLink
    );
 
-#if defined(CCI_HSI)
-/* for high speed ISOBUS test implementation */
-   iso_BaseSetHsiActive(s16CfHandle, ISO_TRUE);
-#endif /* defined(CCI_HSI) */
+#if defined(ISO_CLIENT_NETWORK_DISTRIBUTOR)
+   /* This call is required to ensure processing of network managment FiFo
+      being triggered by BaseMemberAdd(). 
+	  otherwise IsoSetWorkingSetMaster() will fail. */
+   IsoCbClientDistributorCyclic();
+#endif /* defined(ISO_CLIENT_NETWORK_DISTRIBUTOR) */
 
    // ------------------------------------------------------------------------------
 
@@ -212,7 +218,7 @@ static void CbCfClientEvents(const ISOCFEVENT_T* psCfData)
    {
       if (psCfData->eIsoUserFunct == task_controller)    // virtual_terminal ...
       {
-          // Task controller has started sending the TC status message ...
+         // Task controller has started sending the TC status message ...
       }
    }
   
@@ -230,21 +236,28 @@ static void CbIsoDataLink( ISO_TPREP_E eDataTransStatus, const ISO_TPINFO_T* psT
        -> following if() must be part of every application */
       if ( psTpInfo->s16HndIntern != HANDLE_GLOBAL )
       {
-       switch ( psTpInfo->dwPGN )
-       {
+         iso_u8 u8SaRequester = ISO_GLOBAL_ADDRESS;
+         ISO_CF_INFO_T sCfInfo;
+         if (iso_BaseGetCfInfo(psTpInfo->s16HndPartner, &sCfInfo) == E_NO_ERR)
+         {
+            u8SaRequester = sCfInfo.u8SourceAddress;
+         }
+            
+         switch ( psTpInfo->dwPGN )
+         {
          case PGN_DIAGNOSTIC_DATA_CLEAR:
             // DM3: Application has to erase trouble codes here and then respond with 
-            iso_DlPgnAcknowledge( ACK, PGN_DIAGNOSTIC_DATA_CLEAR, 0xFFu, 0xFFu,
-                                  psTpInfo->s16HndIntern, psTpInfo->s16HndPartner );
+            iso_DlPgnAcknowledge( ACK, PGN_DIAGNOSTIC_DATA_CLEAR, 0xFFu, u8SaRequester,
+                                    psTpInfo->s16HndIntern, psTpInfo->s16HndPartner );
             break;
          default:
             if ( psTpInfo->s16HndPartner != HANDLE_UNVALID )
             {
-               iso_DlPgnAcknowledge( NACK, psTpInfo->dwPGN, 0xFFu, 0xFFu,
-                                     psTpInfo->s16HndIntern, psTpInfo->s16HndPartner );
+               iso_DlPgnAcknowledge( NACK, psTpInfo->dwPGN, 0xFFu, u8SaRequester,
+                                       psTpInfo->s16HndIntern, psTpInfo->s16HndPartner );
             }
             break;
-        }
+         }
       }
       break; 
    case record_finish :
@@ -298,7 +311,11 @@ static void CbPGNReceiveWheelbasedSpeed(const PGNDAT_T* psData)
    }
    else
    {
-      iso_DebugTrace("AL - Time out - Wheel based speed not received \n");
+#if defined(CCI_TIMESTAMP) 
+      iso_DebugTrace("AL - Time out - Wheel based speed not received: %d \n", psData->s32TimeStamp);
+#else
+      iso_DebugTrace("AL - Time out - Wheel based speed not received %d \n:", iso_BaseGetTimeMs());
+#endif /* defined(CCI_TIMESTAMP) */
    }
 #endif /* defined(_LAY78_) */
 }
