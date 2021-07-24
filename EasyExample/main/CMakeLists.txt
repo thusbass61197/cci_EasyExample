@@ -7,12 +7,6 @@ set(COMPONENT_PRIV_REQUIRES
 )
 
 set(COMPONENT_SRCS 
-  "../AppIso/App_Base.c"
-  "../AppIso/App_Main.c"
-  "../AppIso/App_VTClient.c"
-  "../AppIso/App_TCClient.c"
-  "../AppIso/App_VTClientLev2.c"
-  "../AppIso/AppMemAccess.cpp"
   "../AppCommon/AppOutput.c"
   "../AppCommon/AppHW.cpp"
   "../Samples/AddOn/AppIso_Output.c"
