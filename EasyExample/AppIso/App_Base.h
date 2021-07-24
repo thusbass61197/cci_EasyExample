@@ -26,7 +26,7 @@ extern "C" {
    - Initialize demo application data
    - Announce user / member
 */
-void AppImpl_Ignition(iso_bool qIgnition);
+void AppImpl_Ignition(iso_bool qIgnition, iso_u8 funcInstance);
 
 
 /* ************************************************************************ */
