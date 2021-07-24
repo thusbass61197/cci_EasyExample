@@ -20,6 +20,7 @@ set(COMPONENT_PRIV_REQUIRES
 	lib_cci 
 	IsoConfig 
 	AppCommon
+	spiffs
 )
 
 register_component()

@@ -9,6 +9,21 @@
 #include <IsoVtcApi.h>
 #include "AppPool.h"
 #include "AppCommon/AppUtil.h"
+
+
+#if defined(ESP_PLATFORM)
+#include <sys/param.h>
+#include "esp_err.h"
+#include "esp_log.h"
+#include "esp_spiffs.h"
+
+
+
+static const char *TAG = "AppPool";
+
+#endif // def ESP_PLATFORM
+
+
 #if defined(CCI_USE_ARCHIVE)
 #include "AppArchive.h"
 #endif /* defined(CCI_USE_ARCHIVE) */
@@ -197,9 +212,50 @@ uint32_t poolGetMaxObjectSize(uint8_t channel)
    return (appPool != nullptr) ? appPool->getMaxObjectSize() : 0U;
 }
 
+#if defined(ESP_PLATFORM)
+static esp_err_t register_vfs()
+{
+    ESP_LOGI(TAG, "Initializing SPIFFS");
+
+    esp_vfs_spiffs_conf_t conf = {
+        .base_path = "/spiffs",
+        .partition_label = NULL,
+        .max_files = 5,
+        .format_if_mount_failed = false
+    };
+
+    // Use settings defined above to initialize and mount SPIFFS filesystem.
+    esp_err_t ret = esp_vfs_spiffs_register(&conf);
+
+    if (ret != ESP_OK) {
+        if (ret == ESP_FAIL) {
+            ESP_LOGE(TAG, "Failed to mount or format filesystem");
+        } else if (ret == ESP_ERR_NOT_FOUND) {
+            ESP_LOGE(TAG, "Failed to find SPIFFS partition");
+        } else {
+            ESP_LOGE(TAG, "Failed to initialize SPIFFS (%s)", esp_err_to_name(ret));
+        }
+    }
+
+    size_t total = 0, used = 0;
+    ret = esp_spiffs_info(conf.partition_label, &total, &used);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to get SPIFFS partition information (%s)", esp_err_to_name(ret));
+    } else {
+        ESP_LOGI(TAG, "Partition size: total: %d, used: %d", total, used);
+    }
+
+    return ret;
+}
+#endif // def ESP_PLATFORM
+
 static std::vector<uint8_t> getDataFromFile(const char* fileName)
 {
    std::vector<uint8_t> data;
+	   iso_u32 u32PoolSize = 0;
+#if defined(ESP_PLATFORM)
+    if ( register_vfs() == ESP_OK ) {
+#endif // def ESP_PLATFORM
 
    if (fileName != nullptr)
    {
@@ -210,12 +266,15 @@ static std::vector<uint8_t> getDataFromFile(const char* fileName)
          iso_u32 poolSize = static_cast<iso_u32>(ftell(pFile));
          data.resize(poolSize);
          fseek(pFile, 0L, SEEK_SET);
-         (void)fread(data.data(), sizeof(iso_u8), poolSize, pFile);
+         u32PoolSize = (iso_u32)fread(data.data(), sizeof(iso_u8), poolSize, pFile);
          fclose(pFile);
          pFile = nullptr;
       }
    }
-
+#if defined(ESP_PLATFORM)
+       ESP_LOGI(TAG, "Pool size: %d, file: %s", u32PoolSize, fileName);
+    }
+#endif // def ESP_PLATFORM
    return data;
 }
 
