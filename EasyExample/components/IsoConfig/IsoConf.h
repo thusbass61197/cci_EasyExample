@@ -394,4 +394,6 @@ This define replaces RAMSIZEPOOL */
 #define ISO_NM_MSG_MONITOR
 #define DISABLE_CMDLINE_PARSING
 
+#define ISO_REMOVE_DEPRECATED /* Make sure, that samples are not using deprecated functions. */
+
 #endif   /* DEF_ISO_CONF_H */

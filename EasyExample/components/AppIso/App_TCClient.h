@@ -1,14 +1,32 @@
-/*
- * App_TCClient.h
- *
- *  Created on: 02.03.2021
- *      Author: mail
- */
+/* ************************************************************************ */
+/*!
+   \file       App_TCClient.h
 
-#ifndef APPISO_APP_TCCLIENT_H_
-#define APPISO_APP_TCCLIENT_H_
+   \brief      Header file for TC client implementation
+
+   \author     
+   \date       
+   \copyright  Wegscheider Hammerl Ingenieure Partnerschaft
+
+   \par HISTORY:
+
+*/
+/* ************************************************************************ */
+#ifndef __APPISO_TCC_H
+#define __APPISO_TCC_H
+
+#include "IsoCommonDef.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+/* ************************************************************************ */
 
 void AppTCClientLogin(iso_s16 s16CfHandle);
 
-
-#endif /* APPISO_APP_TCCLIENT_H_ */
+/* ************************************************************************ */
+#ifdef __cplusplus
+} /* end of extern "C" */
+#endif
+#endif /* __APPISO_TCC_H */
+/* ************************************************************************ */

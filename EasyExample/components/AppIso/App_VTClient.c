@@ -20,9 +20,9 @@
 
 #ifdef _LAY6_  /* compile only if VT client is enabled */
 
-#include "settings.h"
+#include "Settings/settings.h"
 #include "AppMemAccess.h"
-#include "AppOutput.h"
+#include "AppCommon/AppOutput.h"
 
 #include "App_VTClient.h"
 #include "VIEngine.h"
@@ -35,7 +35,7 @@
 #if defined(CCI_USE_POOLBUFFER)
 
 #endif /* defined(CCI_USE_POOLBUFFER) */
-#include "AppPool.h"
+#include "AppPool/AppPool.h"
 
 #if defined(_LAY6_) && defined(ISO_VTC_GRAPHIC_AUX)
 #include "../Samples/VtcWithAuxPoolUpload/GAux.h"
@@ -179,7 +179,7 @@ static void CbVtConnCtrl(const ISOVT_EVENT_DATA_T* psEvData)
       }
       // no break -> free pool
       /* fall through */
-
+      /* no break */
    case IsoEvMaskPoolReloadFinished:
       if (u8_poolChannel > 0u)
       {

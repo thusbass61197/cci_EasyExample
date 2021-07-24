@@ -1,25 +1,24 @@
-/* ************************************************************************ */
+/* ********************************************************************* */
 /*!
-   \file           
+   \file
 
-   \brief      VT Client application  
+   \brief          ISO Task Controller Client Demo Application
 
-   \author     Erwin Hammerl
-   \date       Created 17.09.2007 
-   \copyright  Wegscheider Hammerl Ingenieure Partnerschaft
+   \author         Erwin Hammerl
+   \date           Created 12.11.2007
+   \copyright      Wegscheider Hammerl Ingenieure Partnerschaft
 
-   \par HISTORY:
-	 07.01.2015 - author E. Hammerl
-	 - More simply TC demo client
-	 \par
-	 05.05.2015 - author E. Hammerl
-	 - Changes in order to pass CT sequences 10-400, 10-500
-	 \par
-	 22.07.2016 - author E. Hammerl
-	 - Added PD for peer control tests
+   \par
+   07.01.2015 - author E. Hammerl
+   - More simply TC demo client
+   \par
+   05.05.2015 - author E. Hammerl
+   - Changes in order to pass CT sequences 10-400, 10-500
+   \par
+   22.07.2016 - author E. Hammerl
+   - Added PD for peer control tests
 */
-
-/* **************************  includes ********************************** */
+/* ********************************************************************* */
 
 //#define ISO_DEBUG_ENABLED
 #include "IsoDef.h"
