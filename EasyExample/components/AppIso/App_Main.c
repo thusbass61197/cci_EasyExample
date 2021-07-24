@@ -17,7 +17,7 @@
 */
 /* ************************************************************************ */
 
-#include "AppCommon/AppHW.h" 
+#include "AppHW.h"
 
 #include "IsoDef.h"
 #include "App_Base.h"
@@ -74,15 +74,13 @@ iso_bool b__AppRuning = ISO_TRUE;
 
 /* ************************************************************************ */
 /*! \brief Sample main function */
-void app_main(void)
+void isobus_main(void)
 {
 #if !defined(DISABLE_CMDLINE_PARSING)
    hw_SetConfiguration(argc, argv);
 #endif 
    PrintKeyBoard();
    hw_DebugPrint("ISO Application starts \n");
-   /* Initialize application */
-   Settings_init();
    AppHW_Init();
 
 #if defined(APP_TEST_CAN_DRIVER)

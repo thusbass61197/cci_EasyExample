@@ -9,7 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <string.h>
-#include "Settings/settings.h"
+#include "settings.h"
 #include "AppMemAccess.h"
 
 #if defined(ESP_PLATFORM)

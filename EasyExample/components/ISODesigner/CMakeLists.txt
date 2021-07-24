@@ -3,28 +3,17 @@
 
 
 set(COMPONENT_SRCS 
-  "App_Base.c"
-  "App_Main.c"
-  "App_VTClient.c"
-  "App_TCClient.c"
-  "App_VTClientLev2.c"
-  "AppMemAccess.cpp"
 )
 
 set(COMPONENT_ADD_INCLUDEDIRS 
-  "."
+  "MyWorkspace1/MyProject1/Output/"
 )
-
 
 set(COMPONENT_REQUIRES 
 )
 
 set(COMPONENT_PRIV_REQUIRES 
-	lib_cci 
-	IsoConfig 
-	ISODesigner 
-	Settings 
-	AppCommon 
 )
 
 register_component()
+

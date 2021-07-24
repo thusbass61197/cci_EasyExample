@@ -29,9 +29,9 @@
 
 #ifdef _LAY10_  /* compile only if TC client is enabled */
 
-#include "Settings/settings.h"
+#include "settings.h"
 #include "AppMemAccess.h"
-#include "AppCommon/AppOutput.h"
+#include "AppOutput.h"
 #include "DDI.h"
 #include "DDIDesignator.h"
 

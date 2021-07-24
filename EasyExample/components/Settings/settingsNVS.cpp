@@ -5,11 +5,11 @@
 
 */
 /* ************************************************************************ */
+#include <settings.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 #include <string>
-#include "settings.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_system.h"
