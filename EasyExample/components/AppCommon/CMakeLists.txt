@@ -10,12 +10,16 @@ set(COMPONENT_SRCS
 
 set(COMPONENT_ADD_INCLUDEDIRS 
   "."
+  ".."
 )
 
 set(COMPONENT_REQUIRES 
 )
 
-set(COMPONENT_PRIV_REQUIRES lib_cci Settings IsoConfig
+set(COMPONENT_PRIV_REQUIRES 
+	lib_cci 
+	Settings 
+	IsoConfig
 )
 
 register_component()

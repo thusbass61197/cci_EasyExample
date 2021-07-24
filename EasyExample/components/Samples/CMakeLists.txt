@@ -2,11 +2,13 @@
 
 
 set(COMPONENT_SRCS 
-  "AppIso_Output.c"
+  "AddOn/AppIso_Output.c"
 )
 
 set(COMPONENT_ADD_INCLUDEDIRS 
   "."
+  ".."
+  "AddOn"
 )
 
 set(COMPONENT_REQUIRES 

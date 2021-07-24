@@ -29,7 +29,7 @@ set(COMPONENT_PRIV_REQUIRES
 	Diagnostic 
 	spiffs
 	AppCanDriverEsp32
-	AddOn
+	Samples
 )
 
 register_component()

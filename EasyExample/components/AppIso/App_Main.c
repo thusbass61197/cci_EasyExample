@@ -17,18 +17,17 @@
 */
 /* ************************************************************************ */
 
-#include "AppHW.h"
+#include "AppCommon/AppHW.h" 
 
 #include "IsoDef.h"
 #include "App_Base.h"
 
 
-#include "AppOutput.h"
-#include "settings.h"
+#include "AppCommon/AppOutput.h"
 #include "App_VTClient.h"  /* needed only for DoKeyBoard() */
-#include "App_TCClient.h"  /* needed only for DoKeyBoard() */
+//#include "App_TCClient.h"  /* needed only for DoKeyBoard() */
 
-#include "AppIso_Output.h"  /* relative to IsoLib */
+#include "../Samples/AddOn/AppIso_Output.h"  /* relative to IsoLib */
 #include "AppIso_Diagnostic.h"
 #include "sdkconfig.h"
 
@@ -81,6 +80,7 @@ int isobus_main(int_t argc, char_t* argv[])
 #endif 
    PrintKeyBoard();
    hw_DebugPrint("ISO Application starts \n");
+   /* Initialize application */
    AppHW_Init();
 
 #if defined(APP_TEST_CAN_DRIVER)
