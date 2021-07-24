@@ -8,7 +8,7 @@
 #include <IsoCommonDef.h>
 #include <IsoVtcApi.h>
 #include "AppPool.h"
-#include "AppUtil.h"
+#include "AppCommon/AppUtil.h"
 #if defined(CCI_USE_ARCHIVE)
 #include "AppArchive.h"
 #endif /* defined(CCI_USE_ARCHIVE) */
