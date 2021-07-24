@@ -74,7 +74,7 @@ iso_bool b__AppRuning = ISO_TRUE;
 
 /* ************************************************************************ */
 /*! \brief Sample main function */
-void isobus_main(void)
+int isobus_main(int_t argc, char_t* argv[])
 {
 #if !defined(DISABLE_CMDLINE_PARSING)
    hw_SetConfiguration(argc, argv);

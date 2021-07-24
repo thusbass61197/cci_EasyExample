@@ -13,7 +13,7 @@
 #include "IsoCommonDef.h"
 #include "IsoCommonApi.h"
 #include "settings.h"
-extern void isobus_main(void);
+extern int isobus_main(int_t argc, char_t* argv[]);
 void app_main(void)
 {
 
@@ -33,6 +33,6 @@ void app_main(void)
 
 
 
-	isobus_main();
+	isobus_main(0, NULL);
 
 }
