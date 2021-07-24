@@ -30,6 +30,7 @@ set(COMPONENT_PRIV_REQUIRES
 	spiffs
 	AppCanDriverEsp32
 	Samples
+	SerialNumber
 )
 
 register_component()

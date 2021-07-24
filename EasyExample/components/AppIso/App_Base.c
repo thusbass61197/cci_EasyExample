@@ -18,11 +18,13 @@
 #include "App_TCClient.h"
 #endif /* _LAY10_ */
 
-#include "AppOutput.h"
-#include "settings.h"
+#include "AppCommon/AppOutput.h"
+#include "Settings/settings.h"
 #if defined(ISO_CLIENT_NETWORK_DISTRIBUTOR)
 #include "CoreBaseFiFo/ClientBaseThreading.h"
 #endif /* defined(ISO_CLIENT_NETWORK_DISTRIBUTOR) */
+
+#include "SerialNumber.h"
 
 #define SA_PREFERRED     0x8Cu      // Preferred source address of CF
 
@@ -54,9 +56,6 @@ static void  CbPGNReceiveWheelbasedSpeed(const PGNDAT_T* psData);
 
 static void  AppImpl_AL2(void);
 static void  App_SetDTCforAddressViolation(iso_u8 u8SA);
-
-
-extern uint32_t  u32SeriNoGet(void);
 
 
 void AppImpl_Ignition( iso_bool qIgnition, iso_u8 funcInstance)
