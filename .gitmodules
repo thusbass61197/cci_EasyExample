@@ -1,5 +1,5 @@
-[submodule "EasyExample/lib_cci"]
-	path = EasyExample/lib_cci
+[submodule "EasyExample/components/lib_cci"]
+	path = EasyExample/components/lib_cci
 	url = https://github.com/Meisterschulen-am-Ostbahnhof-Munchen/cci_ecu_driver_private.git
 [submodule "EasyExample/components/tcp_server"]
 	path = EasyExample/components/tcp_server
