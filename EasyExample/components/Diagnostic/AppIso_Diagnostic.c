@@ -7,6 +7,7 @@
 #include "IsoBaseApi.h"
 #include "IsoMnApi.h"
 #include "AppIso_Diagnostic.h"
+#include "SerialNumber.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -53,8 +54,6 @@ static iso_u8* getComplianceCertificate(iso_u16* length);
 /* the following functions return default values */
 static iso_u8* getNoneActiveFaults(iso_u16* length);
 static iso_u8* getNoneAdditionalDiagnostics(iso_u16* length);
-
-extern void Serial_Number_VariableGet(char * c_Serial_Number_Variable);
 
 iso_bool processPart12PGN(ISO_TPREP_E eTpRep, const ISO_TPINFO_T* psMsgInfo)
 {

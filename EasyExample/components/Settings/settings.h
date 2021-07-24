@@ -2,10 +2,8 @@
 /*!
    \file
    \brief       Helper functions for reading and writing settings to a file.
-
 */
 /* ************************************************************************ */
-
 #ifndef DEF_SETTINGS_H
 #define DEF_SETTINGS_H
 

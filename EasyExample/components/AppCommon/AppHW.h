@@ -56,6 +56,9 @@ extern "C" {
 
 /* ************************************************************************ */
 
+#if !defined(DISABLE_CMDLINE_PARSING)
+   void     hw_SetConfiguration(int_t argc, char_t* argv[]);
+#endif /* !defined(DISABLE_CMDLINE_PARSING) */
    void     hw_Init(void);
    void     hw_Shutdown(void);
    uint8_t  hw_PowerSwitchIsOn(void);

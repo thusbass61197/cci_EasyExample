@@ -19,7 +19,14 @@
 /* ************************************************************************ */
 
 #include <stdio.h>
+#include <string>
+
 #include "AppHW.h"
+#include "Settings/settings.h"
+
+#if defined(_WIN32) && defined(linux)
+#error _WIN32 and linux can not defined at the same time!!!
+#endif 
 
 #ifdef ESP_PLATFORM
 #include "freertos/FreeRTOS.h"
@@ -27,13 +34,10 @@
 #include "sdkconfig.h"
 #endif  //ESP_PLATFORM
 
-
-#ifdef _WIN32
-
-
+/* ************************************************************************ */
+#if defined(_WIN32)
 
 #include "WBZCANDriver.h"
-
 #include <Windows.h>
 #include <conio.h>   // for keyboard ...
 
@@ -43,7 +47,6 @@
 #endif /* defined(USE_APP_OUTPUT) */ 
 
 /* ************************************************************************ */
-
 using namespace WBZCANDRIVER;
 using namespace std;
 
@@ -56,69 +59,46 @@ static CANDriver* pCANDriver = NULL;
 static uint8_t m_MaxCanNodes_u8 = 0u;
 
 /* ************************************************************************ */
-
-static void HW_CanMsgPrint(uint8_t canNode_u8, CANMsg_t* can_msg_ps, uint8_t isRX);
-
+#endif  /* defined(_WIN32) */
+/* ************************************************************************ */
 
 /* ************************************************************************ */
-BOOL WINAPI ConsoleHandler(DWORD CEvent)
-{
-   BOOL DoClose_q = TRUE;
-
-   switch (CEvent)
-   {
-   case CTRL_C_EVENT:
-      printf("CTRL+C received! \n");
-      break;
-   case CTRL_BREAK_EVENT:
-      printf("CTRL+BREAK received! \n");
-      break;
-   case CTRL_CLOSE_EVENT:
-      printf("Program being closed! \n");
-      break;
-   case CTRL_LOGOFF_EVENT:
-      printf("User is logging off! \n");
-      break;
-   case CTRL_SHUTDOWN_EVENT:
-      printf("User is logging off! \n");
-      break;
-   default:
-      DoClose_q = false;
-      break;
-   }
-
-   if (DoClose_q == TRUE)
-   {
-      hw_Shutdown();
-   }
-
-   return TRUE;
-}
-#endif  //_WIN32
-
-#if defined(linux) || defined(ESP_PLATFORM)
+#if defined(linux)
 #include <stdlib.h>     //used for clearing the screen
 #include <time.h>       //used to get time for random number generator
 #include <unistd.h>
-#endif // defined(linux) || defined(ESP_PLATFORM)
+// for terminal 
+#include <sys/ioctl.h>
+#include <termios.h>
+// for ctrl-c
+#include <signal.h>
+
+static void signal_function(int sig);
+
+#endif   /* defined(linux) */
+/* ************************************************************************ */
+
+/* ************************************************************************ */
+
+static volatile uint8_t m_PowerSwitch_u8 = 0u;
 
 /* ************************************************************************ */
 
 void hw_Init(void)
 {
-#ifdef _WIN32
+#if defined(_WIN32)
    if (SetConsoleCtrlHandler(
       (PHANDLER_ROUTINE)ConsoleHandler, TRUE) == FALSE)
-   {
-      // unable to install handler... 
-      printf("Unable to install console handler!\n");
+   {  // unable to install handler... 
+      hw_DebugPrint("Unable to install console handler!\n");
    }
 #endif //def _WIN32
+   m_PowerSwitch_u8 = 1u;
 }
 
 void hw_Shutdown(void)
 {
-#ifdef _WIN32
+#if defined(_WIN32)
    if (pCANDriver)
    {
       pCANDriver->deInitialiseDriver();
@@ -126,11 +106,13 @@ void hw_Shutdown(void)
    }
    m_MaxCanNodes_u8 = 0u;
 #endif // def _WIN32
+   m_PowerSwitch_u8 = 0u;
+   hw_DebugPrint("Shutdown finished \n");
 }
 
 uint8_t hw_PowerSwitchIsOn(void)
 {
-   return 1u;
+   return m_PowerSwitch_u8;
 }
 
 void hw_DebugPrint(const char_t format[], ...)
@@ -148,7 +130,7 @@ void hw_vDebugPrint(const char_t format[], va_list args)
 
 void hw_DebugTrace(const char_t format[], ...)
 {
-#ifndef _WIN32
+#if !defined(_WIN32)
    va_list args;
    va_start(args, format);
    vprintf(format, args);
@@ -191,21 +173,27 @@ void hw_LogError(const char_t format[], ...)
 
 int32_t hw_GetTimeMs(void)
 {
+   static int32_t s_timeTickOffset = -100000; // -100000 fails getting started with driver V11.2.2
+
 #ifdef _WIN32
-   if (pCANDriver)
-   {
-      return (int32_t)pCANDriver->getTimeStamp();
-   }
-   else
-   {
-      return 0uL;
-   }
+   iso_s32 timeInMilliseconds = (pCANDriver) ? 
+                                (int32_t)pCANDriver->getTimeStamp() : 
+                                (iso_s32)GetTickCount(); // time elapsed in ms since system start (up to ~50 days); https://msdn.microsoft.com/de-de/library/windows/desktop/ms724408(v=vs.85).aspx
 #else //_WIN32
     struct timespec tv; //RAII complicated or impossible
     clock_gettime(CLOCK_MONOTONIC, &tv);
     iso_s32 timeInMilliseconds = static_cast<iso_s32>(((tv.tv_sec) * 1000) + ((tv.tv_nsec) / 1000000));
-    return timeInMilliseconds;
 #endif //def _WIN32
+
+    static int32_t s_timeTickStart = timeInMilliseconds;
+
+    timeInMilliseconds = (timeInMilliseconds - s_timeTickStart) + s_timeTickOffset;
+
+#if !defined(CCI_USE_ISO_TIME)
+    return timeInMilliseconds;
+#else // !defined(CCI_USE_ISO_TIME)
+    return timeInMilliseconds << 10;
+#endif // !defined(CCI_USE_ISO_TIME)
 }
 
 
@@ -215,12 +203,14 @@ int32_t hw_GetTimeMs(void)
 void hw_CanInit(uint8_t maxCanNodes_u8)
 {
    uint8_t i_u8;
-
+   char_t  file_ac[100];
    m_MaxCanNodes_u8 = maxCanNodes_u8;
 
    pCANDriver = getCANDriverInstance();
    //pCANDriver->setStdOutStreams(&std::cerr, &std::cout); // not the can log, &std::clog );
-   pCANDriver->initialiseDriver("WHEPS_candriver.ini");
+   getString("CanConfig", "file", "WHEPS_candriver.ini", file_ac, 100UL);
+   pCANDriver->initialiseDriver(file_ac);
+
    for (i_u8 = 1u; i_u8 <= m_MaxCanNodes_u8; i_u8++)
    {
       if (!pCANDriver->connect(i_u8))
@@ -383,16 +373,16 @@ static void HW_CanMsgPrint(uint8_t canNode_u8, CANMsg_t* can_msg_ps, uint8_t isR
 }
 #endif // !defined(CCI_CAN_API) 
 
-
+/* ************************************************************************ */
 /* ************************************************************************ */
 void hw_SimDoSleep(uint32_t milliseconds)
 {
-#ifdef _WIN32
+#if defined(_WIN32)
    Sleep(milliseconds);
-#endif // def _WIN32
-#ifdef linux
+#endif 
+#if defined(linux)
    usleep(milliseconds * 1000);
-#endif // def _WIN32
+#endif 
 #ifdef ESP_PLATFORM
    vTaskDelay(milliseconds / portTICK_PERIOD_MS); // 200HZ FreeRTOS Taskrate need for 5ms Sleep.
 #endif // def ESP_PLATFORM
@@ -401,18 +391,18 @@ void hw_SimDoSleep(uint32_t milliseconds)
 /* ************************************************************************ */
 int_t hw_SimGetKbHit(void)
 {
-#ifdef _WIN32
+#if defined(_WIN32)
    return _kbhit();
-#else // _WIN32
+#else 
     return 0;
-#endif //_WIN32
+#endif 
 }
 
 
 /* ************************************************************************ */
 int_t hw_SimGetCharEx(uint8_t noEcho)
 {
-#ifdef _WIN32
+#if defined(_WIN32)
    int_t ch = (noEcho == 1u) ? _getch() : _getche();
    if (ch == 0) 
    {  // empty... read next...
@@ -424,5 +414,142 @@ int_t hw_SimGetCharEx(uint8_t noEcho)
 #endif // def _WIN32
 }
 
+/* ************************************************************************ */
+#if !defined(DISABLE_CMDLINE_PARSING)
+void hw_SetConfiguration(int_t argc, char_t* argv[])
+{
+   int_t  i;
 
+   for (i = 0; i < argc; i++)
+   {
+      if ((std::string(argv[i]) == "-h") || (std::string(argv[i]) == "-help"))
+      {
+         hw_DebugPrint("%s \n", argv[0]);
+         hw_DebugPrint("-h -help \n");
+         hw_DebugPrint("-iop objectpoolfile \n");
+         hw_DebugPrint("-lbl poollabel \n");
+         hw_DebugPrint("-ini ./settings.ini \n");
+#if defined(linux)
+         hw_DebugPrint("-canid 0 vcanX \n");
+#else
+         hw_DebugPrint("-canini WHEPS_candriver.ini \n");
+#endif /* defined(linux) */
+      }
+      else if (std::string(argv[i]) == "-ini")
+      {
+         if (argc > (i + 1))
+         {
+            initSettings(argv[i + 1]);
+         }
+      }
+   }
+
+#if defined(linux)
+   createSection("SocketCan");
+#endif // linux
+   createSection("ObjectPool");
+
+   for (i = 0; i < argc; i++)
+   {
+      if (std::string(argv[i]) == "-iop")
+      {
+         if (argc > (i + 1))
+         {
+            setString("ObjectPool", "file", argv[i + 1]);
+         }
+      }
+      else if (std::string(argv[i]) == "-lbl")
+      {
+         if (argc > (i + 1))
+         {
+            setString("ObjectPool", "label", argv[i + 1]);
+         }
+      }
+      else if (std::string(argv[i]) == "-canid")
+      {
+         if (argc > (i + 2))
+         {
+            std::string key("idx");
+            key += argv[i + 1];
+            setString("SocketCan", key.c_str(), argv[i + 2]);
+         }
+      }
+      else if (std::string(argv[i]) == "-canini")
+      {
+         if (argc > (i + 1))
+         {
+            setString("CanConfig", "file", argv[i + 1]);
+         }
+      }
+   }
+
+#if defined(linux)
+   {  /* create default CAN entry */
+      char_t canSockName[10];
+      getString("SocketCan", "idx0", "can0", &canSockName[0], 10u);
+   }
+#endif // linux
+
+   //settings.Save();
+}
+#endif /* !defined(DISABLE_CMDLINE_PARSING) */
+
+/* ************************************************************************ */
+/* Windows specific */
+/* ************************************************************************ */
+#if defined(_WIN32)
+
+
+/* ************************************************************************ */
+static BOOL WINAPI ConsoleHandler(DWORD CEvent)
+{
+   BOOL DoClose_q = TRUE;
+
+   switch (CEvent)
+   {
+   case CTRL_C_EVENT:
+      hw_DebugPrint("CTRL+C received! \n");
+      break;
+   case CTRL_BREAK_EVENT:
+      hw_DebugPrint("CTRL+BREAK received! \n");
+      break;
+   case CTRL_CLOSE_EVENT:
+      hw_DebugPrint("Program being closed! \n");
+      hw_Shutdown(); // call shutdown...
+      break;
+   case CTRL_LOGOFF_EVENT:
+      hw_DebugPrint("User is logging off! \n");
+      break;
+   case CTRL_SHUTDOWN_EVENT:
+      hw_DebugPrint("User is logging off! \n");
+      break;
+   default:
+      DoClose_q = false;
+      break;
+   }
+
+   if (DoClose_q == TRUE)
+   {  /* reset powerswitch */
+      m_PowerSwitch_u8 = 0u;
+   }
+
+   return TRUE;
+}
+
+#endif   /* defined(_WIN32) */
+
+/* ************************************************************************ */
+/* Linux specific */
+/* ************************************************************************ */
+#if defined(linux)
+
+
+/* ************************************************************************ */
+static void signal_function(int sig)
+{  // can be called asynchronously
+   m_PowerSwitch_u8 = 0u;
+   hw_DebugPrint("Ctrl-C Signal triggered! \n");
+}
+
+#endif   /* defined(linux) */
 /* ************************************************************************ */
