@@ -23,6 +23,7 @@
 
 #include "AppHW.h"
 #include "Settings/settings.h"
+#include "esp_log.h"
 
 #if defined(_WIN32) && defined(linux)
 #error _WIN32 and linux can not defined at the same time!!!
@@ -173,27 +174,9 @@ void hw_LogError(const char_t format[], ...)
 
 int32_t hw_GetTimeMs(void)
 {
-   static int32_t s_timeTickOffset = -100000; // -100000 fails getting started with driver V11.2.2
-
-#ifdef _WIN32
-   iso_s32 timeInMilliseconds = (pCANDriver) ? 
-                                (int32_t)pCANDriver->getTimeStamp() : 
-                                (iso_s32)GetTickCount(); // time elapsed in ms since system start (up to ~50 days); https://msdn.microsoft.com/de-de/library/windows/desktop/ms724408(v=vs.85).aspx
-#else //_WIN32
-    struct timespec tv; //RAII complicated or impossible
-    clock_gettime(CLOCK_MONOTONIC, &tv);
-    iso_s32 timeInMilliseconds = static_cast<iso_s32>(((tv.tv_sec) * 1000) + ((tv.tv_nsec) / 1000000));
-#endif //def _WIN32
-
-    static int32_t s_timeTickStart = timeInMilliseconds;
-
-    timeInMilliseconds = (timeInMilliseconds - s_timeTickStart) + s_timeTickOffset;
-
-#if !defined(CCI_USE_ISO_TIME)
-    return timeInMilliseconds;
-#else // !defined(CCI_USE_ISO_TIME)
-    return timeInMilliseconds << 10;
-#endif // !defined(CCI_USE_ISO_TIME)
+    uint32_t tt = esp_log_timestamp();
+	iso_s32 timeInMilliseconds = tt;
+	return timeInMilliseconds;
 }
 
 
