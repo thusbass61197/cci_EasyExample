@@ -114,10 +114,10 @@
 				<Value>0</Value>
 			</Property>
 			<Property Name="MagnificationX">
-				<Value>150</Value>
+				<Value>225</Value>
 			</Property>
 			<Property Name="MagnificationY">
-				<Value>150</Value>
+				<Value>225</Value>
 			</Property>
 		</PropertySheet>
 	</PropertySheets>
@@ -148,11 +148,37 @@
 				<Object JVS-ID="17000"/>
 			</Objects>
 		</Component>
-		<Component ID="400704840" Class="CMeter" Name="Meter">
+		<Component ID="755019580" Class="CButton" Name="Button">
 			<PropertySheets>
 				<PropertySheet Name="General">
 					<Property Name="ZOrder">
 						<Value>1</Value>
+					</Property>
+				</PropertySheet>
+				<PropertySheet Name="Proxy">
+					<Property Name="Top">
+						<Value>385</Value>
+					</Property>
+					<Property Name="Left">
+						<Value>400</Value>
+					</Property>
+					<Property Name="Transform">
+						<Value>(1.0000000000000000)(0.0000000000000000)(400.0000000000000000)(0.0000000000000000)(1.0000000000000000)(385.0000000000000000)</Value>
+					</Property>
+					<Property Name="ReferencedObjectForMask">
+						<Value>-1</Value>
+					</Property>
+				</PropertySheet>
+			</PropertySheets>
+			<Objects>
+				<Object JVS-ID="6003"/>
+			</Objects>
+		</Component>
+		<Component ID="400704840" Class="CMeter" Name="Meter">
+			<PropertySheets>
+				<PropertySheet Name="General">
+					<Property Name="ZOrder">
+						<Value>2</Value>
 					</Property>
 				</PropertySheet>
 				<PropertySheet Name="Proxy">
@@ -174,32 +200,6 @@
 				<Object JVS-ID="17001"/>
 			</Objects>
 		</Component>
-		<Component ID="755019580" Class="CButton" Name="Button">
-			<PropertySheets>
-				<PropertySheet Name="General">
-					<Property Name="ZOrder">
-						<Value>2</Value>
-					</Property>
-				</PropertySheet>
-				<PropertySheet Name="Proxy">
-					<Property Name="Top">
-						<Value>320</Value>
-					</Property>
-					<Property Name="Left">
-						<Value>400</Value>
-					</Property>
-					<Property Name="Transform">
-						<Value>(1.0000000000000000)(0.0000000000000000)(400.0000000000000000)(0.0000000000000000)(1.0000000000000000)(320.0000000000000000)</Value>
-					</Property>
-					<Property Name="ReferencedObjectForMask">
-						<Value>-1</Value>
-					</Property>
-				</PropertySheet>
-			</PropertySheets>
-			<Objects>
-				<Object JVS-ID="6003"/>
-			</Objects>
-		</Component>
 		<Component ID="393611328" Class="CButton" Name="Button">
 			<PropertySheets>
 				<PropertySheet Name="General">
@@ -209,13 +209,13 @@
 				</PropertySheet>
 				<PropertySheet Name="Proxy">
 					<Property Name="Top">
-						<Value>400</Value>
+						<Value>15</Value>
 					</Property>
 					<Property Name="Left">
 						<Value>400</Value>
 					</Property>
 					<Property Name="Transform">
-						<Value>(1.0000000000000000)(0.0000000000000000)(400.0000000000000000)(0.0000000000000000)(1.0000000000000000)(400.0000000000000000)</Value>
+						<Value>(1.0000000000000000)(0.0000000000000000)(400.0000000000000000)(0.0000000000000000)(1.0000000000000000)(15.0000000000000000)</Value>
 					</Property>
 					<Property Name="ReferencedObjectForMask">
 						<Value>-1</Value>

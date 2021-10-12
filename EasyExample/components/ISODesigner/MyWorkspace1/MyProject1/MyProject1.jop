@@ -67,7 +67,7 @@
 					<Value>Lucida Console</Value>
 				</Property>
 				<Property Name="Size">
-					<Value>12</Value>
+					<Value>5</Value>
 				</Property>
 				<Property Name="Height">
 					<Value>16</Value>
@@ -88,7 +88,7 @@
 					<Value>0</Value>
 				</Property>
 				<Property Name="PointWidth">
-					<Value>9</Value>
+					<Value>4</Value>
 				</Property>
 				<Property Name="Width">
 					<Value>12</Value>
@@ -124,7 +124,7 @@
 					<Value>Lucida Console</Value>
 				</Property>
 				<Property Name="Size">
-					<Value>18</Value>
+					<Value>8</Value>
 				</Property>
 				<Property Name="Height">
 					<Value>24</Value>
@@ -145,7 +145,7 @@
 					<Value>0</Value>
 				</Property>
 				<Property Name="PointWidth">
-					<Value>12</Value>
+					<Value>5</Value>
 				</Property>
 				<Property Name="Width">
 					<Value>16</Value>
