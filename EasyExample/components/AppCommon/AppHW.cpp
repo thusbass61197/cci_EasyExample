@@ -23,6 +23,7 @@
 
 #include "AppHW.h"
 #include "Settings/settings.h"
+#include "esp_log.h"
 
 #if defined(_WIN32) && defined(linux)
 #error _WIN32 and linux can not defined at the same time!!!
