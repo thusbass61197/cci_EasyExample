@@ -8,8 +8,8 @@ ptn_Child3=Document-2
 ptn_Child1=ViewFrame-0
 [5_5_1.ChildFrames.Document-0.ViewFrame-0]
 DocPathName=.\MyProject1\SoftKeyMask_Home.jvi
-WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPDAAAAAAAJBAAAAAAJHCAAAAANICAAAAA
+WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPDAAAAAAAPCAAAAAAJKFAAAAAOPEAAAAA
 ActiveTab=0
-ViewScrollHoriz=1
-ViewScrollVert=1
+ViewScrollHoriz=0
+ViewScrollVert=0
 IsActiveChildFrame=True
