@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <JetViewSoft-DefaultObjects Version="3.0" ProductVersion="5.5.1.4367" RelatedObjectPool=".\MyProject1.jop">
 	<Objects>
+		<Object Class="CButton">
+			<Objects>
+				<Object Class="CFontStyle" JVS-ID="23000" ObjectName="FontAttributes_23000"/>
+			</Objects>
+		</Object>
 		<Object Class="CInputNumber">
 			<Objects>
 				<Object Class="CNumberVariable" JVS-ID="21003" ObjectName="NumberVariable_Tagesziel"/>
