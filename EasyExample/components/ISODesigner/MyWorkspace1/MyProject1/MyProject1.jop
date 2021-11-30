@@ -91,6 +91,52 @@
 				</Value>
 			</Property>
 		</Object>
+		<Object Class="CMacro" JVS-ID="3" ObjectName="Macro_3" Pinned="FALSE">
+			<Commands>
+				<Command id="160" subid="-1">
+					<Params>
+						<Param Name="Object ID" Type="3">3000 - Container_Gesamtzaehler</Param>
+						<Param Name="Show" Type="14">False</Param>
+					</Params>
+				</Command>
+				<Command id="163" subid="-1">
+					<Params>
+						<Param Name="Number of repetitions" Type="1">2</Param>
+						<Param Name="Frequency in hz" Type="1">100</Param>
+						<Param Name="On-time duration in ms" Type="1">100</Param>
+						<Param Name="Off-time duration in ms" Type="1">200</Param>
+					</Params>
+				</Command>
+			</Commands>
+			<Property Name="Comment">
+				<Value>
+					<![CDATA[AAA=]]>
+				</Value>
+			</Property>
+		</Object>
+		<Object Class="CMacro" JVS-ID="4" ObjectName="Macro_4" Pinned="FALSE">
+			<Commands>
+				<Command id="160" subid="-1">
+					<Params>
+						<Param Name="Object ID" Type="3">3000 - Container_Gesamtzaehler</Param>
+						<Param Name="Show" Type="14">1</Param>
+					</Params>
+				</Command>
+				<Command id="163" subid="-1">
+					<Params>
+						<Param Name="Number of repetitions" Type="1">3</Param>
+						<Param Name="Frequency in hz" Type="1">550</Param>
+						<Param Name="On-time duration in ms" Type="1">100</Param>
+						<Param Name="Off-time duration in ms" Type="1">200</Param>
+					</Params>
+				</Command>
+			</Commands>
+			<Property Name="Comment">
+				<Value>
+					<![CDATA[AAA=]]>
+				</Value>
+			</Property>
+		</Object>
 		<Object Class="CFontStyle" JVS-ID="23000" ObjectName="FontAttributes_23000" Pinned="FALSE">
 			<PropertySheet Name="Font" ID="68816">
 				<Property Name="Name">
@@ -1108,7 +1154,7 @@
 					<Value>0</Value>
 				</Property>
 				<Property Name="AutoAdjustTextarea">
-					<Value>1</Value>
+					<Value>0</Value>
 				</Property>
 				<Property Name="3DStyle">
 					<Value>0</Value>
@@ -1173,6 +1219,212 @@
 			</Events>
 			<Objects>
 				<Object JVS-ID="4194305"/>
+			</Objects>
+		</Object>
+		<Object Class="CButton" Name="Button" ObjectName="Button_weg" Pinned="FALSE" JVS-ID="6007">
+			<PropertySheet Name="Button">
+				<Property Name="BackColor">
+					<Value>12632256</Value>
+				</Property>
+				<Property Name="BorderColor">
+					<Value>12632256</Value>
+				</Property>
+				<Property Name="KeyCode">
+					<Value>1</Value>
+				</Property>
+				<Property Name="Hotkey">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Latchable">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Latched">
+					<Value>0</Value>
+				</Property>
+				<Property Name="SuppressBorder">
+					<Value>0</Value>
+				</Property>
+				<Property Name="TransparentBackground">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Enabled">
+					<Value>1</Value>
+				</Property>
+				<Property Name="NoBorder">
+					<Value>0</Value>
+				</Property>
+				<Property Name="RoundEdgeRadius">
+					<Value>0</Value>
+				</Property>
+				<Property Name="AutoAdjustTextarea">
+					<Value>1</Value>
+				</Property>
+				<Property Name="3DStyle">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Width">
+					<Value>75</Value>
+				</Property>
+				<Property Name="Height">
+					<Value>52</Value>
+				</Property>
+				<Property Name="Visible">
+					<Value>1</Value>
+				</Property>
+				<Property Name="Locked">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Comment">
+					<Value>
+						<![CDATA[AAA=]]>
+					</Value>
+				</Property>
+				<Property Name="Disabled">
+					<Value>0</Value>
+				</Property>
+				<Property Name="ExternalReferenceAllowed">
+					<Value>0</Value>
+				</Property>
+			</PropertySheet>
+			<Events>
+				<Event>
+					<Property Name="ID">
+						<Value>
+							<![CDATA[25]]>
+						</Value>
+					</Property>
+					<Property Name="Name">
+						<Value>
+							<![CDATA[OnKeyRelease]]>
+						</Value>
+					</Property>
+					<Property Name="Param">
+						<Value>
+							<![CDATA[]]>
+						</Value>
+					</Property>
+					<Property Name="Macros">
+						<Value>
+							<![CDATA[3]]>
+						</Value>
+					</Property>
+					<Property Name="Conditions">
+						<Value>
+							<![CDATA[]]>
+						</Value>
+					</Property>
+					<Property Name="KeyCode">
+						<Value>
+							<![CDATA[0]]>
+						</Value>
+					</Property>
+				</Event>
+			</Events>
+			<Objects>
+				<Object JVS-ID="4194342"/>
+			</Objects>
+		</Object>
+		<Object Class="CButton" Name="Button" ObjectName="Button_hin" Pinned="FALSE" JVS-ID="6008">
+			<PropertySheet Name="Button">
+				<Property Name="BackColor">
+					<Value>12632256</Value>
+				</Property>
+				<Property Name="BorderColor">
+					<Value>12632256</Value>
+				</Property>
+				<Property Name="KeyCode">
+					<Value>1</Value>
+				</Property>
+				<Property Name="Hotkey">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Latchable">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Latched">
+					<Value>0</Value>
+				</Property>
+				<Property Name="SuppressBorder">
+					<Value>0</Value>
+				</Property>
+				<Property Name="TransparentBackground">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Enabled">
+					<Value>1</Value>
+				</Property>
+				<Property Name="NoBorder">
+					<Value>0</Value>
+				</Property>
+				<Property Name="RoundEdgeRadius">
+					<Value>0</Value>
+				</Property>
+				<Property Name="AutoAdjustTextarea">
+					<Value>1</Value>
+				</Property>
+				<Property Name="3DStyle">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Width">
+					<Value>78</Value>
+				</Property>
+				<Property Name="Height">
+					<Value>47</Value>
+				</Property>
+				<Property Name="Visible">
+					<Value>1</Value>
+				</Property>
+				<Property Name="Locked">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Comment">
+					<Value>
+						<![CDATA[AAA=]]>
+					</Value>
+				</Property>
+				<Property Name="Disabled">
+					<Value>0</Value>
+				</Property>
+				<Property Name="ExternalReferenceAllowed">
+					<Value>0</Value>
+				</Property>
+			</PropertySheet>
+			<Events>
+				<Event>
+					<Property Name="ID">
+						<Value>
+							<![CDATA[25]]>
+						</Value>
+					</Property>
+					<Property Name="Name">
+						<Value>
+							<![CDATA[OnKeyRelease]]>
+						</Value>
+					</Property>
+					<Property Name="Param">
+						<Value>
+							<![CDATA[]]>
+						</Value>
+					</Property>
+					<Property Name="Macros">
+						<Value>
+							<![CDATA[4]]>
+						</Value>
+					</Property>
+					<Property Name="Conditions">
+						<Value>
+							<![CDATA[]]>
+						</Value>
+					</Property>
+					<Property Name="KeyCode">
+						<Value>
+							<![CDATA[0]]>
+						</Value>
+					</Property>
+				</Event>
+			</Events>
+			<Objects>
+				<Object JVS-ID="4194335"/>
 			</Objects>
 		</Object>
 		<Object Class="CInputNumber" Name="Edit" ObjectName="InputNumber_Gesamtziel" Pinned="FALSE" JVS-ID="9000">
@@ -2148,6 +2400,212 @@
 				<Object JVS-ID="23000"/>
 			</Objects>
 		</Object>
+		<Object Class="COutputText" Name="Text" ObjectName="OutputString_hin" Pinned="FALSE" JVS-ID="11007">
+			<PropertySheet Name="Text">
+				<Property Name="Text">
+					<Value>
+						<![CDATA[aABpAG4AAAA=]]>
+					</Value>
+				</Property>
+				<Property Name="ResourceID">
+					<Value/>
+				</Property>
+				<Property Name="MultiLine">
+					<Value>0</Value>
+				</Property>
+				<Property Name="WordBreak">
+					<Value>0</Value>
+				</Property>
+				<Property Name="WrapOnHyphen">
+					<Value>0</Value>
+				</Property>
+				<Property Name="AlignH">
+					<Value>1</Value>
+				</Property>
+				<Property Name="AlignV">
+					<Value>4</Value>
+				</Property>
+				<Property Name="Appearance">
+					<Value>0</Value>
+				</Property>
+				<Property Name="ControlType">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Numeric">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Offset">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Scale">
+					<Value>1</Value>
+				</Property>
+				<Property Name="FormatType">
+					<Value>0</Value>
+				</Property>
+				<Property Name="FormatString">
+					<Value>0</Value>
+				</Property>
+				<Property Name="NoOfDecimals">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Value">
+					<Value>
+						<![CDATA[aABpAG4AAAA=]]>
+					</Value>
+				</Property>
+				<Property Name="StringLength">
+					<Value>4</Value>
+				</Property>
+				<Property Name="Transparent">
+					<Value>1</Value>
+				</Property>
+				<Property Name="LeadingZeros">
+					<Value>0</Value>
+				</Property>
+				<Property Name="ZeroAsBlank">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Truncate">
+					<Value>0</Value>
+				</Property>
+				<Property Name="BkColor">
+					<Value>16777215</Value>
+				</Property>
+				<Property Name="RoundEdgeRadius">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Width">
+					<Value>78</Value>
+				</Property>
+				<Property Name="Height">
+					<Value>20</Value>
+				</Property>
+				<Property Name="Visible">
+					<Value>1</Value>
+				</Property>
+				<Property Name="Locked">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Comment">
+					<Value>
+						<![CDATA[AAA=]]>
+					</Value>
+				</Property>
+				<Property Name="Disabled">
+					<Value>0</Value>
+				</Property>
+				<Property Name="ExternalReferenceAllowed">
+					<Value>0</Value>
+				</Property>
+			</PropertySheet>
+			<Objects>
+				<Object JVS-ID="23000"/>
+			</Objects>
+		</Object>
+		<Object Class="COutputText" Name="Text" ObjectName="OutputString_11008" Pinned="FALSE" JVS-ID="11008">
+			<PropertySheet Name="Text">
+				<Property Name="Text">
+					<Value>
+						<![CDATA[dwBlAGcAAAA=]]>
+					</Value>
+				</Property>
+				<Property Name="ResourceID">
+					<Value/>
+				</Property>
+				<Property Name="MultiLine">
+					<Value>0</Value>
+				</Property>
+				<Property Name="WordBreak">
+					<Value>0</Value>
+				</Property>
+				<Property Name="WrapOnHyphen">
+					<Value>0</Value>
+				</Property>
+				<Property Name="AlignH">
+					<Value>1</Value>
+				</Property>
+				<Property Name="AlignV">
+					<Value>4</Value>
+				</Property>
+				<Property Name="Appearance">
+					<Value>0</Value>
+				</Property>
+				<Property Name="ControlType">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Numeric">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Offset">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Scale">
+					<Value>1</Value>
+				</Property>
+				<Property Name="FormatType">
+					<Value>0</Value>
+				</Property>
+				<Property Name="FormatString">
+					<Value>0</Value>
+				</Property>
+				<Property Name="NoOfDecimals">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Value">
+					<Value>
+						<![CDATA[dwBlAGcAAAA=]]>
+					</Value>
+				</Property>
+				<Property Name="StringLength">
+					<Value>4</Value>
+				</Property>
+				<Property Name="Transparent">
+					<Value>1</Value>
+				</Property>
+				<Property Name="LeadingZeros">
+					<Value>0</Value>
+				</Property>
+				<Property Name="ZeroAsBlank">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Truncate">
+					<Value>0</Value>
+				</Property>
+				<Property Name="BkColor">
+					<Value>16777215</Value>
+				</Property>
+				<Property Name="RoundEdgeRadius">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Width">
+					<Value>71</Value>
+				</Property>
+				<Property Name="Height">
+					<Value>20</Value>
+				</Property>
+				<Property Name="Visible">
+					<Value>1</Value>
+				</Property>
+				<Property Name="Locked">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Comment">
+					<Value>
+						<![CDATA[AAA=]]>
+					</Value>
+				</Property>
+				<Property Name="Disabled">
+					<Value>0</Value>
+				</Property>
+				<Property Name="ExternalReferenceAllowed">
+					<Value>0</Value>
+				</Property>
+			</PropertySheet>
+			<Objects>
+				<Object JVS-ID="23000"/>
+			</Objects>
+		</Object>
 		<Object Class="COutputText" Name="Text" ObjectName="OutputString_SoftKey_Reset_Gesamtzaehler" Pinned="FALSE" JVS-ID="11009">
 			<PropertySheet Name="Text">
 				<Property Name="Text">
@@ -2812,168 +3270,6 @@
 			<Objects>
 				<Object JVS-ID="25000"/>
 				<Object JVS-ID="24000"/>
-			</Objects>
-		</Object>
-		<Object Class="CMeter" Name="Meter" ObjectName="Meter_Gesamtzaehler" Pinned="FALSE" JVS-ID="17000">
-			<PropertySheet Name="Meter">
-				<Property Name="NeedleColor">
-					<Value>0</Value>
-				</Property>
-				<Property Name="BorderColor">
-					<Value>0</Value>
-				</Property>
-				<Property Name="ArcAndTickColor">
-					<Value>0</Value>
-				</Property>
-				<Property Name="BackColor">
-					<Value>16777215</Value>
-				</Property>
-				<Property Name="BackMode">
-					<Value>1</Value>
-				</Property>
-				<Property Name="DrawArc">
-					<Value>1</Value>
-				</Property>
-				<Property Name="DrawBorder">
-					<Value>0</Value>
-				</Property>
-				<Property Name="DrawTicks">
-					<Value>1</Value>
-				</Property>
-				<Property Name="DeflectionDirection">
-					<Value>1</Value>
-				</Property>
-				<Property Name="NoOfTicks">
-					<Value>11</Value>
-				</Property>
-				<Property Name="StartAngle">
-					<Value>-30</Value>
-				</Property>
-				<Property Name="EndAngle">
-					<Value>210</Value>
-				</Property>
-				<Property Name="MinValue">
-					<Value>0</Value>
-				</Property>
-				<Property Name="MaxValue">
-					<Value>100</Value>
-				</Property>
-				<Property Name="NeedlePos">
-					<Value>0</Value>
-				</Property>
-				<Property Name="NeedleWidth">
-					<Value>1</Value>
-				</Property>
-				<Property Name="Value">
-					<Value/>
-				</Property>
-				<Property Name="Width">
-					<Value>80</Value>
-				</Property>
-				<Property Name="Height">
-					<Value>80</Value>
-				</Property>
-				<Property Name="Visible">
-					<Value>1</Value>
-				</Property>
-				<Property Name="Locked">
-					<Value>0</Value>
-				</Property>
-				<Property Name="Comment">
-					<Value>
-						<![CDATA[AAA=]]>
-					</Value>
-				</Property>
-				<Property Name="Disabled">
-					<Value>0</Value>
-				</Property>
-				<Property Name="ExternalReferenceAllowed">
-					<Value>0</Value>
-				</Property>
-			</PropertySheet>
-			<Objects>
-				<Object JVS-ID="21001"/>
-			</Objects>
-		</Object>
-		<Object Class="CMeter" Name="Meter" ObjectName="Meter_Tageszaehler" Pinned="FALSE" JVS-ID="17001">
-			<PropertySheet Name="Meter">
-				<Property Name="NeedleColor">
-					<Value>0</Value>
-				</Property>
-				<Property Name="BorderColor">
-					<Value>0</Value>
-				</Property>
-				<Property Name="ArcAndTickColor">
-					<Value>0</Value>
-				</Property>
-				<Property Name="BackColor">
-					<Value>16777215</Value>
-				</Property>
-				<Property Name="BackMode">
-					<Value>1</Value>
-				</Property>
-				<Property Name="DrawArc">
-					<Value>1</Value>
-				</Property>
-				<Property Name="DrawBorder">
-					<Value>0</Value>
-				</Property>
-				<Property Name="DrawTicks">
-					<Value>1</Value>
-				</Property>
-				<Property Name="DeflectionDirection">
-					<Value>1</Value>
-				</Property>
-				<Property Name="NoOfTicks">
-					<Value>11</Value>
-				</Property>
-				<Property Name="StartAngle">
-					<Value>-30</Value>
-				</Property>
-				<Property Name="EndAngle">
-					<Value>210</Value>
-				</Property>
-				<Property Name="MinValue">
-					<Value>0</Value>
-				</Property>
-				<Property Name="MaxValue">
-					<Value>100</Value>
-				</Property>
-				<Property Name="NeedlePos">
-					<Value>0</Value>
-				</Property>
-				<Property Name="NeedleWidth">
-					<Value>1</Value>
-				</Property>
-				<Property Name="Value">
-					<Value/>
-				</Property>
-				<Property Name="Width">
-					<Value>80</Value>
-				</Property>
-				<Property Name="Height">
-					<Value>80</Value>
-				</Property>
-				<Property Name="Visible">
-					<Value>1</Value>
-				</Property>
-				<Property Name="Locked">
-					<Value>0</Value>
-				</Property>
-				<Property Name="Comment">
-					<Value>
-						<![CDATA[AAA=]]>
-					</Value>
-				</Property>
-				<Property Name="Disabled">
-					<Value>0</Value>
-				</Property>
-				<Property Name="ExternalReferenceAllowed">
-					<Value>0</Value>
-				</Property>
-			</PropertySheet>
-			<Objects>
-				<Object JVS-ID="21000"/>
 			</Objects>
 		</Object>
 		<Object Class="CRectangle" Name="Rectangle" ObjectName="LinearBargraph_Gesamtzaehler" Pinned="FALSE" JVS-ID="18000">
@@ -3786,6 +4082,9 @@
 				<Property Name="Name">
 					<Value>Text</Value>
 				</Property>
+				<Property Name="TabIndex">
+					<Value>-1</Value>
+				</Property>
 				<Property Name="Transform">
 					<Value>(1.0000000000000000)(0.0000000000000000)(0.0000000000000000)(0.0000000000000000)(1.0000000000000000)(15.5000000000000000)</Value>
 				</Property>
@@ -4344,6 +4643,25 @@
 				<Object JVS-ID="20001"/>
 			</Objects>
 		</Object>
+		<Object Class="CProxy" Name="Text" ObjectName="" Pinned="FALSE" JVS-ID="4194335">
+			<PropertySheet Name="Proxy">
+				<Property Name="Top">
+					<Value>14</Value>
+				</Property>
+				<Property Name="Left">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Name">
+					<Value>Text</Value>
+				</Property>
+				<Property Name="Transform">
+					<Value>(1.0000000000000000)(0.0000000000000000)(0.0000000000000000)(0.0000000000000000)(1.0000000000000000)(13.5000000000000000)</Value>
+				</Property>
+			</PropertySheet>
+			<Objects>
+				<Object JVS-ID="11007"/>
+			</Objects>
+		</Object>
 		<Object Class="CProxy" Name="Image_1" ObjectName="" Pinned="FALSE" JVS-ID="4194336">
 			<PropertySheet Name="Proxy">
 				<Property Name="Top">
@@ -4430,6 +4748,25 @@
 			</PropertySheet>
 			<Objects>
 				<Object JVS-ID="20003"/>
+			</Objects>
+		</Object>
+		<Object Class="CProxy" Name="Text" ObjectName="" Pinned="FALSE" JVS-ID="4194342">
+			<PropertySheet Name="Proxy">
+				<Property Name="Top">
+					<Value>14</Value>
+				</Property>
+				<Property Name="Left">
+					<Value>0</Value>
+				</Property>
+				<Property Name="Name">
+					<Value>Text</Value>
+				</Property>
+				<Property Name="Transform">
+					<Value>(1.0000000000000000)(0.0000000000000000)(0.0000000000000000)(0.0000000000000000)(1.0000000000000000)(13.5000000000000000)</Value>
+				</Property>
+			</PropertySheet>
+			<Objects>
+				<Object JVS-ID="11008"/>
 			</Objects>
 		</Object>
 	</Objects>
